@@ -82,7 +82,6 @@ def jugar_ruleta():
             if bandera_girada:
                 ralentizar = False
                 tema_final = obtener_tema(angulo)
-                print(f"¡La ruleta se detuvo en el tema: {tema_final}!")
                 tema_mostrado = True
                 girar = False # Evita mostrar el tema más de una vez
 
@@ -105,47 +104,9 @@ def jugar_ruleta():
         rotar_flecha = flecha_img.get_rect(center=ruleta_rect.center)
         pantalla.blit(flecha_img, rotar_flecha.topleft)
 
-
         # Actualizar la pantalla
         pygame.display.flip()
         clock.tick(fps)
         # fondo = pantalla.blit(imagen_fondo_escalar, (0, 0))
 
     return fondo, tema_final
-
-
-
-
-# 
-
-# def dibujar_texto_con_boton_transparente(pantalla:surface, texto, x:int, y:int, ancho:int, alto:int, color_normal:tuple, color_hover:tuple, pos_mouse):
-#     ''' 
-#     ¿Para qué sirve?
-#     Dibuja un botón con texto que cambia de color cuando el mouse pasa por encima (hover).
-
-#     ¿Qué parámetro acepta?
-#     - pantalla: (pygame.Surface) La superficie donde se dibuja el botón.
-#     - texto: (str) El texto que se mostrará en el botón.
-#     - x: (int) La posición en el eje X de la esquina superior izquierda del botón.
-#     - y: (int) La posición en el eje Y de la esquina superior izquierda del botón.
-#     - ancho: (int) El ancho del botón.
-#     - alto: (int) El alto del botón.
-#     - color_normal: (tuple) El color del texto cuando no hay hover.
-#     - color_hover: (tuple) El color del texto cuando el mouse está encima del botón.
-#     - pos_mouse: (tuple) Las coordenadas actuales del mouse.
-
-#     ¿Qué retorna?
-#     - pygame.Surface: El texto renderizado, que actúa como el "botón" visual.
-#     '''
-#     pos_mouse = pygame.mouse.get_pos()  # Obtiene la posición del mouse
-#     color_texto = color_hover if x <= pos_mouse[0] <= x + ancho and y <= pos_mouse[1] <= y + alto else color_normal  # Cambia el color si el mouse está sobre el botón
-#     fuente = pygame.font.SysFont("Showcard Gothic", 30)  # Selecciona la fuente
-#     texto_renderizado = fuente.render(str(texto), True, color_texto)  # Renderiza el texto con el color adecuado
-#     texto_rect = texto_renderizado.get_rect(center=(x + ancho // 2, y + alto // 2))  # Ajusta el rectángulo para centrar el texto en el botón
-#     mostrar_texto = pantalla.blit(texto_renderizado, texto_rect)  # Dibuja el texto en la pantalla
-
-#     return mostrar_texto  # Retorna la superficie con el texto renderizado
-
-
-
-# #boton_jugar = dibujar_texto_con_boton_transparente (pantalla, "Jugar", 625,560, 100, 20 , CYAN1, CYAN1 , pos_mouse)

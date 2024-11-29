@@ -9,7 +9,7 @@ def mostrar_texto(texto, superficie, x, y, color=BLACK, font_size=30):
     ''' 
     ¿Para qué sirve?
     Esta función permite mostrar un texto en una superficie de Pygame en una posición específica.
-
+    
     ¿Qué parámetro acepta?
     - texto: (str) El texto que se va a mostrar en la pantalla.
     - superficie: (pygame.Surface) La superficie sobre la cual se dibuja el texto.
@@ -17,14 +17,14 @@ def mostrar_texto(texto, superficie, x, y, color=BLACK, font_size=30):
     - y: (int) La posición en el eje Y donde se dibujará el texto.
     - color: (tuple) El color del texto. Por defecto es BLACK.
     - font_size: (int) El tamaño de la fuente del texto. Por defecto es 30.
-
+    
     ¿Qué retorna?
     - None. La función solo dibuja el texto en la pantalla sin devolver nada.
     '''
     fuente = pygame.font.Font(None, font_size)  # Crea un objeto fuente con el tamaño especificado
     texto_renderizado = fuente.render(texto, True, color)  # Renderiza el texto con la fuente y el color
     superficie.blit(texto_renderizado, (x, y))  # Dibuja el texto en la superficie en la posición (x, y)
-    
+
 
 # Función para guardar los textos introducidos en un archivo CSV
 def guardar_textos(textos_guardados, path_csv):
@@ -54,19 +54,20 @@ def guardar_textos(textos_guardados, path_csv):
             
             archivo.write(",".join(textos_guardados) + "\n")  # Escribe los textos guardados como una fila en el CSV
 
+
 # Función para gestionar los eventos de entrada de texto (por ejemplo, teclas presionadas)
 def gestionar_eventos_entrada(evento, cuadro_activo, cuadros_texto):
     ''' 
-    ¿Para quo sirve?
-    Esta funcion gestiona los eventos de teclado para escribir en los cuadros de texto o cambiar de cuadro.
-
+    ¿Para qué sirve?
+    Esta función gestiona los eventos de teclado para escribir en los cuadros de texto o cambiar de cuadro.
+    
     ¿Qué parámetro acepta?
     - evento: (pygame.event.Event) El evento generado por las teclas del teclado (escribir por ejemplo)
     - cuadro_activo: (int) El índice del cuadro de texto actualmente activo (de 0 a 4, siendo 0 la pregunta)
     - cuadros_texto: (list) Lista de cadenas que representan el texto en cada cuadro.
 
     ¿Qué retorna?
-    - cuadro_activo: (int) El indice actualizado del cuadro de texto activo.
+    - cuadro_activo: (int) El índice actualizado del cuadro de texto activo.
     - cuadros_texto: (list) La lista actualizada con el texto introducido.
     '''
     path_csv = Path('preguntas_cargadas.csv')  # Ruta al archivo CSV donde se guardarán los textos
@@ -87,6 +88,7 @@ def gestionar_eventos_entrada(evento, cuadro_activo, cuadros_texto):
                     cuadros_texto[cuadro_activo] += evento.unicode  # Añade el carácter al cuadro activo
 
     return cuadro_activo, cuadros_texto  # Devuelve el índice del cuadro activo y la lista de textos actualizada
+
 
 # Función para dibujar botones con texto en un fondo transparente, con detección de hover (cuando el mouse pasa sobre ellos)
 def dibujar_texto_con_boton_transparente(pantalla:surface, texto, x:int, y:int, ancho:int, alto:int, color_normal:tuple, color_hover:tuple, pos_mouse):
@@ -117,9 +119,59 @@ def dibujar_texto_con_boton_transparente(pantalla:surface, texto, x:int, y:int, 
 
     return mostrar_texto  # Retorna la superficie con el texto renderizado
 
+
+# Función para dibujar vidas (corazones) en la pantalla
+def dibujar_vidas(pantalla, vidas):
+    '''
+    ¿Para qué sirve?
+    Esta función dibuja los corazones que representan las vidas del jugador en la pantalla.
+
+    ¿Qué parámetro acepta?
+    - pantalla: (pygame.Surface) La superficie donde se dibujan los corazones.
+    - vidas: (int) La cantidad de vidas que tiene el jugador, se dibuja un corazón por cada vida.
+
+    ¿Qué retorna?
+    - None. La función solo dibuja los corazones en la pantalla.
+    '''
+    corazon_lleno = pygame.image.load('assets/corazon_lleno.png')  # Carga la imagen del corazón
+    corazon_lleno_escalado = pygame.transform.scale(corazon_lleno, (20, 20))  # Escala la imagen del corazón
+
+    # Posicionar los corazones en la pantalla
+    for i in range(vidas):
+        pantalla.blit(corazon_lleno_escalado, (50 + i * 50, 30))  # Cada vida se dibuja 50 píxeles a la derecha
+
+
+# Función para dibujar los puntos del jugador en la pantalla
+def dibujar_puntos(pantalla, puntos):
+    '''
+    ¿Para qué sirve?
+    Esta función dibuja el puntaje del jugador en la pantalla.
+
+    ¿Qué parámetro acepta?
+    - pantalla: (pygame.Surface) La superficie donde se dibuja el puntaje.
+    - puntos: (int) La cantidad de puntos que tiene el jugador.
+
+    ¿Qué retorna?
+    - None. La función solo dibuja los puntos en la pantalla.
+    '''
+    fuente = pygame.font.Font(None, 36)  # Crea una fuente con un tamaño de 36
+    texto = fuente.render(f"Puntos: {puntos}", True, (BLACK))  # Renderiza el texto con los puntos
+    pantalla.blit(texto, (600, 10))  # Dibuja el texto en la pantalla
+
+
 # Función para limpiar la pantalla y mostrar un fondo
 def limpiar_pantalla():
-    ruta_fondo = 'assets/fondo.jpg'
-    imagen_fondo = pygame.image.load(ruta_fondo)
-    imagen_fondo_escalar = pygame.transform.scale(imagen_fondo, (ANCHO, ALTO))
-    pygame.display.flip()
+    '''
+    ¿Para qué sirve?
+    Esta función limpia la pantalla y dibuja un fondo.
+    
+    ¿Qué parámetro acepta?
+    - Ninguno.
+    
+    ¿Qué retorna?
+    - None. La función solo limpia la pantalla y muestra un fondo.
+    '''
+    ruta_fondo = 'assets/fondo.jpg'  # Ruta de la imagen de fondo
+    imagen_fondo = pygame.image.load(ruta_fondo)  # Carga la imagen de fondo
+    imagen_fondo_escalar = pygame.transform.scale(imagen_fondo, (ANCHO, ALTO))  # Escala la imagen para ajustarla a la pantalla
+    pygame.display.flip()  # Actualiza la pantalla
