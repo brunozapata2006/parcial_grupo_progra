@@ -7,19 +7,19 @@ from ruleta import *
 import time
 
 # Bandera para controlar el clic en el juego
-bandera_click = True
-
 
 def dibujar_botones_pantalla_juego(pantalla, pos_mouse):  
     '''
+    Plantilla Documentacion
     ¿Para qué sirve?
-    Esta función dibuja la pantalla de juego con un botón para volver al menú principal.
-    
+    Esta función dibuja la pantalla de juego y coloca un botón para volver al menú principal. El botón se puede interactuar con el mouse para regresar al menú cuando se haga clic sobre él.
+
     ¿Qué parámetro acepta?
-    - Ninguno
-    
+    - pantalla: (Surface) Superficie de la ventana en la que se dibujan los elementos.
+    - pos_mouse: (tuple) Posición actual del mouse, utilizada para detectar si el mouse está sobre el botón.
+
     ¿Qué retorna?
-    - boton_menu : Un botón con colisión que devuelve al menú principal.
+    - boton_menu: (Rect) Un objeto de tipo `Rect` que representa el área del botón para volver al menú principal. Este valor se utiliza para verificar si el botón ha sido presionado.
     '''
     # Establecer título de la ventana del juego
     pygame.display.set_caption("A jugar preguntados!")
@@ -41,6 +41,7 @@ def dibujar_botones_pantalla_juego(pantalla, pos_mouse):
 
     # Retornar el botón de "Volver al Menu"
     return boton_volver_menu_juego
+
 
 
 def mostrar_preguntas(pantalla, preguntas, pregunta_actual_index, pos_mouse, vidas):

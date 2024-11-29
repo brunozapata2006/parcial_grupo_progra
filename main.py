@@ -32,7 +32,7 @@ Titulo = pygame.image.load('assets/titulo.png')  # Carga la imagen del título.
 
 # Configuración de la ventana
 pygame.display.set_icon(icono)  # Establece el icono para la ventana del juego.
-pygame.display.set_caption("Menu preguntados!")  # Establece el título de la ventana del juego.
+
 
 # Pantalla principal y fondo
 imagen_fondo_escalar = pygame.transform.scale(imagen_fondo, (800, 600))  # Redimensiona la imagen de fondo a 800x600.
@@ -44,8 +44,13 @@ jugar = True  # Variable de control para el bucle principal del juego.
 estado = "menu"  # Estado inicial del juego (en el menú principal).
 
 # Variables globales para las preguntas
-cuadros_texto = ["", "", "", "", ""]  # Inicializa los cuadros de texto vacíos para las preguntas y respuestas.
-cuadro_activo = 0  # El primer cuadro es el activo.
+preguntas_guardadas = []  # Lista de preguntas guardadas
+path_csv_cargar = Path('preguntas_cargadas.csv')  # Archivo donde se guardan las preguntas
+cuadro_activo = 0  # Índice del cuadro activo (inicia en 0)
+cuadros_texto = ["", "", "", "", ""]  # Lista de cuadros de texto (pregunta y respuestas)
+
+path_csv = Path('ranking_top.csv')
+
 reloj = pygame.time.Clock()  # Crea un objeto reloj para controlar el FPS.
 
 # Variables para las preguntas
@@ -56,6 +61,8 @@ bandera_click = False  # Bandera para detectar si se hizo un clic.
 # Bucle principal del juego
 puntos = 0  # Inicializa los puntos del jugador.
 pos = [0, 0]  # Posición del mouse (inicializada en [0, 0]).
+
+guardado = False
 
 # Bucle principal donde ocurre todo
 while jugar:
@@ -83,18 +90,6 @@ while jugar:
             elif 600 <= pos[0] <= 50 and 550 <= pos[1] <= 580:
                 print("y esto?")  # Mensaje especial.
                 estado = "o.O"  # Cambia al estado de easter egg.
-                
-        # Estando en "agregar preguntas"
-        elif estado == "agregar preguntas":
-            dibujar_boton_volver_preguntas = dibujar_botones_agregar_pregunta(pantalla, pos_mouse, cuadro_activo, cuadros_texto)
-            if dibujar_boton_volver_preguntas.collidepoint(pos):
-                estado = "menu"  # Vuelve al menú principal.
-
-        # Estando en el easter egg
-        elif estado == "o.O":
-            dibujar_boton_volver_gatitos = easter_egg(pantalla, pos_mouse)
-            if dibujar_boton_volver_gatitos.collidepoint(pos):
-                estado = "menu"  # Vuelve al menú principal.
         
         # Estando en el estado "juego"
         elif estado == "juego":
@@ -111,27 +106,38 @@ while jugar:
         # Estando en "Ver top mundiales"
         elif estado == "Ver top mundiales":
             dibujar_boton_volver_top = dibujar_botones_top_mundial(pantalla, pos_mouse)  # Dibuja los botones del top mundial.
-    
+            mostrar_top(pantalla, path_csv)
+            if dibujar_boton_volver_top.collidepoint(pos):
+                estado = "menu"
+                
         # Estando en "agregar preguntas"
         elif estado == "agregar preguntas":
             pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo.
             dibujar_boton_volver_preguntas = dibujar_botones_agregar_pregunta(pantalla, pos_mouse, cuadro_activo, cuadros_texto)  # Dibuja los botones para agregar preguntas.
-        
+            cuadro_activo, cuadros_texto = gestionar_eventos_entrada(evento, cuadro_activo, cuadros_texto)
+            if dibujar_boton_volver_preguntas.collidepoint(pos):
+                estado = "menu"
+            
         # Estando en el easter egg
         elif estado == "o.O":
-            dibujar_boton_volver_gatitos = easter_egg(pantalla, pos_mouse)  # Dibuja la pantalla del easter egg.
+            dibujar_boton_volver_gatitos = easter_egg(pantalla, pos_mouse)
+            if dibujar_boton_volver_gatitos.collidepoint(pos):
+                estado = "menu"  # Vuelve al menú principal.
         
     # Redibujar la pantalla según el estado
     pantalla.fill(CYAN3)  # Rellena la pantalla con el color CYAN3.
 
     if estado == "menu":
+        pygame.display.set_caption("Menu preguntados!")
         pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo del menú.
         botones_menu = dibujar_menu_botones(pantalla, pos_mouse)  # Dibuja los botones del menú.
         pantalla.blit(Titulo_escalado, (300, 20))  # Dibuja el título escalado en la pantalla.
         tema_elegido = ''  # Reinicia el tema.
         vidas = 3  # Reinicia las vidas.
+        puntos = 0
         
     elif estado == "juego":
+        pygame.display.set_caption("Vamos a jugar")
         pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo en el juego.
         if tema_elegido != '':  # Si ya se eligió un tema.
             botones, pregunta_actual_index, respuestas, vidas_vis = mostrar_preguntas(pantalla, preguntas, pregunta_actual_index, pos_mouse, vidas)  # Muestra las preguntas.
@@ -153,22 +159,28 @@ while jugar:
             dibujar_puntos(pantalla, puntos)  # Muestra los puntos en la pantalla.
                     
             if vidas == 0:  # Si las vidas llegan a 0, vuelve al menú.
-                estado = "menu"
-                puntos = 0
+                estado = "menu" 
                 
             if pregunta_actual_index >= len(preguntas):  # Si ya no hay preguntas, vuelve al menú.
                 estado = "menu"
-                puntos = 0
         
     elif estado == "Ver top mundiales":
+        pygame.display.set_caption("Vamos a ver los tops!")
         pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo.
         botones_tops_mundiales = dibujar_botones_top_mundial(pantalla, pos_mouse)  # Dibuja los botones para el top mundial.
-    
+        mostrar_top(pantalla, path_csv)
+        
     elif estado == "agregar preguntas":
+        pygame.display.set_caption("Agregar preguntas!")
         pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo.
         dibujar_boton_volver_preguntas = dibujar_botones_agregar_pregunta(pantalla, pos_mouse, cuadro_activo, cuadros_texto)  # Dibuja los botones para agregar preguntas.
-        
+        if not guardado:
+            guardar_textos(cuadros_texto, path_csv_cargar)
+            guardado = True
+
+
     elif estado == "o.O":
+        pygame.display.set_caption("o.O")
         dibujar_boton_volver_gatitos = easter_egg(pantalla, pos_mouse)  # Dibuja la pantalla del easter egg.
         
     # Actualizar la pantalla
@@ -176,7 +188,7 @@ while jugar:
     pygame.display.update()  # Actualiza la pantalla.
 
     # Control de FPS
-    reloj.tick(30)  # Limita la tasa de refresco a 30 FPS.
+    reloj.tick(60)  # Limita la tasa de refresco a 30 FPS.
 
 # Termina el juego y cierra la ventana.
 pygame.quit()

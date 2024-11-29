@@ -4,6 +4,18 @@ import random
 from funciones import *
 
 def jugar_ruleta():
+    '''
+    Plantilla Documentacion
+    ¿Para qué sirve?
+    Esta función gestiona un juego de ruleta giratoria en Pygame. El jugador puede hacer clic en la ruleta para hacerla girar, y luego se detiene mostrando un tema aleatorio basado en la posición de la ruleta.
+
+    ¿Qué parámetro acepta?
+    - Ninguno.
+
+    ¿Qué retorna?
+    - fondo: (Surface) La superficie del fondo renderizada.
+    - tema_final: (str) El tema seleccionado aleatoriamente en base a la posición de la ruleta.
+    '''
     bandera_girada = False
     # Configuración inicial
     pygame.init()

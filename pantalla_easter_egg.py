@@ -6,7 +6,16 @@ from configuraciones import *
 # Función para mostrar una animación o "easter egg" con imágenes de gatos
 def easter_egg(pantalla, pos_mouse):
     ''' 
-    Muestra un "Easter Egg" en forma de imágenes de gatos en la pantalla y un botón para volver al menú.
+    Plantilla Documentacion
+    ¿Para qué sirve? 
+    Esta función muestra un "Easter Egg" en forma de imágenes de gatos en la pantalla y un botón para volver al menú. Se dibujan tres imágenes diferentes de gatos en varias posiciones y se incluye un botón interactivo para regresar al menú principal.
+
+    ¿Qué parámetros acepta?
+    - pantalla: (Surface) La superficie de la ventana de Pygame donde se dibujan las imágenes y los botones.
+    - pos_mouse: (tuple) Las coordenadas (x, y) actuales del ratón. Es utilizado para detectar el hover sobre el botón.
+
+    ¿Qué retorna?
+    - boton_volver_menu: (Rect) El botón de "Volver al Menú", que permite al usuario regresar al menú principal cuando es presionado.
     '''
     # Establecer el título de la ventana
     pygame.display.set_caption("Easter egg?? o.o")
@@ -43,3 +52,4 @@ def easter_egg(pantalla, pos_mouse):
 
     # Retornar el botón de "Volver al Menu" para manejar la interacción
     return boton_volver_menu
+

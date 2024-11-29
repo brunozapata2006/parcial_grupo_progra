@@ -9,7 +9,7 @@ def mostrar_texto(texto, superficie, x, y, color=BLACK, font_size=30):
     ''' 
     ¿Para qué sirve?
     Esta función permite mostrar un texto en una superficie de Pygame en una posición específica.
-    
+
     ¿Qué parámetro acepta?
     - texto: (str) El texto que se va a mostrar en la pantalla.
     - superficie: (pygame.Surface) La superficie sobre la cual se dibuja el texto.
@@ -17,57 +17,58 @@ def mostrar_texto(texto, superficie, x, y, color=BLACK, font_size=30):
     - y: (int) La posición en el eje Y donde se dibujará el texto.
     - color: (tuple) El color del texto. Por defecto es BLACK.
     - font_size: (int) El tamaño de la fuente del texto. Por defecto es 30.
-    
+
     ¿Qué retorna?
     - None. La función solo dibuja el texto en la pantalla sin devolver nada.
     '''
     fuente = pygame.font.Font(None, font_size)  # Crea un objeto fuente con el tamaño especificado
     texto_renderizado = fuente.render(texto, True, color)  # Renderiza el texto con la fuente y el color
     superficie.blit(texto_renderizado, (x, y))  # Dibuja el texto en la superficie en la posición (x, y)
-
+    
 
 # Función para guardar los textos introducidos en un archivo CSV
 def guardar_textos(textos_guardados, path_csv):
-    ''' 
-    ¿Para qué sirve?
-    Esta función guarda una lista de textos en un archivo CSV, añadiendo una fila al archivo si es necesario.
+    '''
+    Plantilla Documentacion
+    ¿Para qué sirve? 
+    Esta función guarda los textos introducidos en una lista en un archivo CSV. Los textos se guardan solo si todos los cuadros contienen contenido (ningún cuadro vacío).
 
-    ¿Qué parámetro acepta?
-    - textos_guardados: (list) Lista de textos que se guardarán en el archivo CSV.
-    - path_csv: (Path) Ruta al archivo CSV donde se guardarán los textos.
+    ¿Qué parámetros acepta?
+    - textos_guardados: (list) Lista que contiene los textos que se guardarán en el archivo CSV. Debe contener una pregunta y cuatro respuestas.
+    - path_csv: (Path) Ruta del archivo CSV donde se guardarán los textos.
 
     ¿Qué retorna?
-    - None. La función guarda los textos en el archivo CSV y no retorna ningún valor.
+    - None. La función guarda los textos en el archivo CSV si todos los cuadros tienen contenido y no retorna ningún valor.
     '''
-    todos_contenido = True  # Inicializa un flag para verificar si todos los cuadros contienen texto
-    for texto in textos_guardados:
-        if texto == "":  # Si algún cuadro está vacío, se marca como 'no todo contenido'
+    todos_contenido = True  # Se inicializa una variable para verificar si todos los cuadros tienen contenido
+    for texto in textos_guardados:  # Recorre cada texto en la lista
+        if texto == "":  # Si algún texto está vacío, marca como False
             todos_contenido = False
-            break  # Salimos del bucle en cuanto encontramos un cuadro vacío
+            break  # Sale del bucle si encuentra un cuadro vacío
 
-    if todos_contenido:  # Si todos los cuadros contienen texto
-        archivo_existe = path_csv.exists()  # Verifica si el archivo CSV ya existe
+    if todos_contenido:  # Si todos los cuadros tienen texto
+        archivo_existe = path_csv.exists()  # Verifica si el archivo ya existe
 
         with open(path_csv, 'a', newline='', encoding='utf-8') as archivo:  # Abre el archivo en modo de append
-            if not archivo_existe:
-                archivo.write("Pregunta,Respuesta 1,Respuesta 2,Respuesta 3,Respuesta correcta\n")  # Escribe la cabecera si el archivo es nuevo
-            
-            archivo.write(",".join(textos_guardados) + "\n")  # Escribe los textos guardados como una fila en el CSV
+            if not archivo_existe:  # Si el archivo no existe, escribe la cabecera
+                archivo.write("Pregunta,Respuesta 1,Respuesta 2,Respuesta 3,Respuesta correcta\n")
+
+            archivo.write(",".join(textos_guardados) + "\n")  # Guarda los textos como una nueva fila en el archivo CSV
 
 
 # Función para gestionar los eventos de entrada de texto (por ejemplo, teclas presionadas)
 def gestionar_eventos_entrada(evento, cuadro_activo, cuadros_texto):
     ''' 
-    ¿Para qué sirve?
-    Esta función gestiona los eventos de teclado para escribir en los cuadros de texto o cambiar de cuadro.
-    
+    ¿Para quo sirve?
+    Esta funcion gestiona los eventos de teclado para escribir en los cuadros de texto o cambiar de cuadro.
+
     ¿Qué parámetro acepta?
     - evento: (pygame.event.Event) El evento generado por las teclas del teclado (escribir por ejemplo)
     - cuadro_activo: (int) El índice del cuadro de texto actualmente activo (de 0 a 4, siendo 0 la pregunta)
     - cuadros_texto: (list) Lista de cadenas que representan el texto en cada cuadro.
 
     ¿Qué retorna?
-    - cuadro_activo: (int) El índice actualizado del cuadro de texto activo.
+    - cuadro_activo: (int) El indice actualizado del cuadro de texto activo.
     - cuadros_texto: (list) La lista actualizada con el texto introducido.
     '''
     path_csv = Path('preguntas_cargadas.csv')  # Ruta al archivo CSV donde se guardarán los textos
