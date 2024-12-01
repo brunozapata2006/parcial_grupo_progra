@@ -6,18 +6,18 @@ from funciones import *
 def jugar_ruleta():
     '''
     Plantilla Documentacion
-    ¿Para qué sirve?
-    Esta función gestiona un juego de ruleta giratoria en Pygame. El jugador puede hacer clic en la ruleta para hacerla girar, y luego se detiene mostrando un tema aleatorio basado en la posición de la ruleta.
+    ¿Para qua sirve?
+    Esta funcion gestiona un juego de ruleta giratoria en Pygame. El jugador puede hacer clic en la ruleta para hacerla girar, y luego se detiene mostrando un tema aleatorio basado en la posicion de la ruleta.
 
-    ¿Qué parámetro acepta?
+    ¿Qua parámetro acepta?
     - Ninguno.
 
-    ¿Qué retorna?
+    ¿Qua retorna?
     - fondo: (Surface) La superficie del fondo renderizada.
-    - tema_final: (str) El tema seleccionado aleatoriamente en base a la posición de la ruleta.
+    - tema_final: (str) El tema seleccionado aleatoriamente en base a la posicion de la ruleta.
     '''
     bandera_girada = False
-    # Configuración inicial
+    # Configuracion inicial
     pygame.init()
     ALTO, ANCHO = 800, 600
     pantalla = pygame.display.set_mode((ALTO, ANCHO), pygame.RESIZABLE)
@@ -49,7 +49,7 @@ def jugar_ruleta():
     NUM_TEMAS = len(TEMAS)
     sector_angulo = 360 // NUM_TEMAS  # Ángulo por sector (45° por sector)
 
-    # Función para iniciar el giro
+    # Funcion para iniciar el giro
     def girar_ruleta():
         nonlocal velocidad, seleccionar_angulo, ralentizar, tema_mostrado
         velocidad = random.randint(20, 30)  # Velocidad inicial aleatoria
@@ -60,10 +60,10 @@ def jugar_ruleta():
 
         return bandera_girada
 
-    # Función para determinar el tema
+    # Funcion para determinar el tema
     def obtener_tema(angulo):
         # Convertir el ángulo en un sector
-        angulo_ajustado = angulo % 360  # Asegurar que esté entre 0 y 359
+        angulo_ajustado = angulo % 360  # Asegurar que esta entre 0 y 359
         seleccionar_indice = int(angulo_ajustado // sector_angulo)
         return TEMAS[seleccionar_indice]
 
@@ -83,7 +83,7 @@ def jugar_ruleta():
         # Dibujar el fondo
         pantalla.blit(imagen_fondo_escalar, (0, 0))
 
-        # Actualizar rotación
+        # Actualizar rotacion
         if velocidad > 0:
             angulo += velocidad
             angulo %= 360
@@ -97,7 +97,7 @@ def jugar_ruleta():
                 tema_mostrado = True
                 girar = False # Evita mostrar el tema más de una vez
 
-        # Inicia desaceleración si está cerca del objetivo
+        # Inicia desaceleracion si está cerca del objetivo
         if not ralentizar and abs(angulo - seleccionar_angulo) <= 50:
             ralentizar = True
 

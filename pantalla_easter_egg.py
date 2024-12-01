@@ -3,24 +3,24 @@ from funciones import *
 from colores import *
 from configuraciones import *
 
-# Función para mostrar una animación o "easter egg" con imágenes de gatos
+# Funcion para mostrar una animacion o "easter egg" con imagenes de gatos
 def easter_egg(pantalla, pos_mouse):
     ''' 
     Plantilla Documentacion
-    ¿Para qué sirve? 
-    Esta función muestra un "Easter Egg" en forma de imágenes de gatos en la pantalla y un botón para volver al menú. Se dibujan tres imágenes diferentes de gatos en varias posiciones y se incluye un botón interactivo para regresar al menú principal.
+    ¿Para qua sirve? 
+    Esta funcion muestra un "Easter Egg" en forma de imagenes de gatos en la pantalla y un boton para volver al menu. Se dibujan tres imagenes diferentes de gatos en varias posiciones y se incluye un boton interactivo para regresar al menu principal.
 
-    ¿Qué parámetros acepta?
-    - pantalla: (Surface) La superficie de la ventana de Pygame donde se dibujan las imágenes y los botones.
-    - pos_mouse: (tuple) Las coordenadas (x, y) actuales del ratón. Es utilizado para detectar el hover sobre el botón.
+    ¿Qua parametros acepta?
+    - pantalla: (Surface) La superficie de la ventana de Pygame donde se dibujan las imagenes y los botones.
+    - pos_mouse: (tuple) Las coordenadas (x, y) actuales del raton. Es utilizado para detectar el hover sobre el boton.
 
-    ¿Qué retorna?
-    - boton_volver_menu: (Rect) El botón de "Volver al Menú", que permite al usuario regresar al menú principal cuando es presionado.
+    ¿Qua retorna?
+    - boton_volver_menu: (Rect) El boton de "Volver al Menu", que permite al usuario regresar al menu principal cuando es presionado.
     '''
-    # Establecer el título de la ventana
+    # Establecer el titulo de la ventana
     pygame.display.set_caption("Easter egg?? o.o")
 
-    # Cargar las imágenes de los gatos para el Easter egg
+    # Cargar las imagenes de los gatos para el Easter egg
     ruta_gato_1 = 'assets/gato_easter_egg.jpg'
     imagen_gato_1 = pygame.image.load(ruta_gato_1)
     
@@ -30,26 +30,26 @@ def easter_egg(pantalla, pos_mouse):
     ruta_gatito = 'assets/gatito.jpg'
     imagen_gatito = pygame.image.load(ruta_gatito)
 
-    # Dibujar las imágenes en la pantalla en diferentes posiciones
+    # Dibujar las imagenes en la pantalla en diferentes posiciones
     pantalla.blit(imagen_gato_1, (0, 0))  # Gato grande en la parte superior izquierda
     pantalla.blit(imagen_gato_2, (0, 400))  # Gato 2 en la parte inferior izquierda
     pantalla.blit(imagen_gatito, (600, 0))  # Gatito pequeño en la parte superior derecha
 
-    # Obtener la posición del mouse para manejar la interacción con el botón
-    pos_mouse = pygame.mouse.get_pos()  # Obtiene la posición actual del mouse
+    # Obtener la posicion del mouse para manejar la interaccion con el boton
+    pos_mouse = pygame.mouse.get_pos()  # Obtiene la posicion actual del mouse
 
-    # Dibujar el botón "Volver al Menu" con detección de hover (cambio de color al pasar el mouse)
+    # Dibujar el boton "Volver al Menu" con deteccion de hover (cambio de color al pasar el mouse)
     boton_volver_menu = dibujar_texto_con_boton_transparente(
         pantalla, 
         "Volver al Menu", 
-        620, 550, 200, 50,  # Posición y tamaño del botón
+        620, 550, 200, 50,  # Posicion y tamaño del boton
         WHEAT1, RED1,  # Colores para el estado normal y hover
-        pos_mouse  # Posición del mouse para detección de hover
+        pos_mouse  # Posicion del mouse para deteccion de hover
     )
 
     # Actualizar la pantalla para reflejar los cambios
     pygame.display.flip()
 
-    # Retornar el botón de "Volver al Menu" para manejar la interacción
+    # Retornar el boton de "Volver al Menu" para manejar la interaccion
     return boton_volver_menu
 

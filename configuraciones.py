@@ -7,4 +7,3 @@ vidas = 3
 FPS = 240
 CUADRO_ALTO = 40
 CUADRO_ANCHO = 400  
-
