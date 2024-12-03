@@ -65,3 +65,6 @@ def guardar_nombre_csv(nombre, puntuacion, path_csv):
         
         # Escribe el nombre y la puntuación en una nueva fila
         escritor.writerow([nombre, puntuacion])
+
+def guardar_vida_tiempo():
+    pass

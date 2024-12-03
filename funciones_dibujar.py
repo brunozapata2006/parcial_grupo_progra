@@ -75,71 +75,86 @@ def dibujar_vidas(pantalla, vidas):
         pantalla.blit(corazon_lleno_escalado, (50 + i * 50, 30))  # Cada vida se dibuja 50 pixeles a la derecha
 
 
-# Funcion para dibujar los puntos del jugador en la pantalla
-def dibujar_puntos(pantalla, puntos):
-    '''
-    ¿Para qua sirve?
-    Esta funcion dibuja el puntaje del jugador en la pantalla.
-
-    ¿Qua parametro acepta?
-    - pantalla: (pygame.Surface) La superficie donde se dibuja el puntaje.
-    - puntos: (int) La cantidad de puntos que tiene el jugador.
-
-    ¿Qua retorna?
-    - None. La funcion solo dibuja los puntos en la pantalla.
-    '''
-    fuente = pygame.font.Font(None, 36)  # Crea una fuente con un tamaño de 36
-    texto = fuente.render(f"Puntos: {puntos}", True, (BLACK))  # Renderiza el texto con los puntos
-    pantalla.blit(texto, (600, 10))  # Dibuja el texto en la pantalla
-
 # Funcion para mostrar texto en la pantalla
-def mostrar_texto(texto, superficie, x, y, color=BLACK, font_size=30):
+def mostrar_texto(superficie, texto, x=None, y=None, color=BLACK, color_fondo=WHEAT1, font_size=30, permitir_segundos = False, duracion = None):
     ''' 
-    ¿Para qua sirve?
-    Esta funcion permite mostrar un texto en una superficie de Pygame en una posicion especifica.
+    ¿Para qué sirve?
+    Esta función permite mostrar un texto en una superficie de Pygame en una posición específica. 
+    Además, puede mostrar el texto por un tiempo limitado si se activa la funcionalidad de temporizador con `permitir_segundos`.
 
-    ¿Qua parametro acepta?
-    - texto: (str) El texto que se va a mostrar en la pantalla.
+    ¿Qué parámetros acepta?
     - superficie: (pygame.Surface) La superficie sobre la cual se dibuja el texto.
-    - x: (int) La posicion en el eje X donde se dibujara el texto.
-    - y: (int) La posicion en el eje Y donde se dibujara el texto.
+    - texto: (str) El texto que se va a mostrar en la pantalla.
+    - x: (int) La posición en el eje X donde se dibujará el texto. Especificar una posición fija o pasar None para personalizar.
+    - y: (int) La posición en el eje Y donde se dibujará el texto. Especificar una posición fija o pasar None para personalizar.
     - color: (tuple) El color del texto. Por defecto es BLACK.
+    - fuente: (str) El nombre de la fuente utilizada para el texto. Por defecto es 'Showcard Gothic'.
     - font_size: (int) El tamaño de la fuente del texto. Por defecto es 30.
+    - permitir_segundos: (bool) Activa o desactiva el temporizador para mostrar el texto por una duración limitada. Por defecto es False.
+    - duracion: (int) Tiempo en segundos durante el cual se muestra el texto si `permitir_segundos` es True. Por defecto es None.
 
-    ¿Qua retorna?
-    - None. La funcion solo dibuja el texto en la pantalla sin devolver nada.
+    ¿Qué retorna?
+    - None. La función no devuelve ningún valor. Su propósito es dibujar el texto en la pantalla.
+
+    Detalles adicionales:
+    - Si `permitir_segundos` es True y se pasa un valor a `duracion`, el texto se mostrará en pantalla durante esa cantidad de segundos antes de desaparecer.
+    - Si `permitir_segundos` es False, el texto se dibuja de manera permanente sin temporizador.
     '''
     fuente = pygame.font.Font(None, font_size)  # Crea un objeto fuente con el tamaño especificado
     texto_renderizado = fuente.render(texto, True, color)  # Renderiza el texto con la fuente y el color
     superficie.blit(texto_renderizado, (x, y))  # Dibuja el texto en la superficie en la posicion (x, y)
-    
 
-# Función para mostrar un cartel
-def mostrar_cartel(screen, texto, duracion, color_fondo, color_texto):
-    """
-    Muestra un cartel en la pantalla durante un tiempo específico.
+    if permitir_segundos == True:
+        inicio = pygame.time.get_ticks()  # Tiempo actual en milisegundos
+        while True:
+            tiempo_actual = pygame.time.get_ticks()
 
-    Parámetros:
-    - screen: La superficie de Pygame donde se dibuja el cartel.
-    - texto: El texto a mostrar.
-    - duracion: Duración en segundos que el cartel estará visible.
-    - font: Fuente para el texto.
-    - color_fondo: Color de fondo de la pantalla.
-    - color_texto: Color del texto.
-    """
-    inicio = pygame.time.get_ticks()  # Tiempo actual en milisegundos
-    fuente = pygame.font.Font(None, 36)
-    while True:
-        tiempo_actual = pygame.time.get_ticks()
+            # Dibujar el fondo y el texto
+            superficie.fill(color_fondo)
+            texto_renderizado = fuente.render(texto, True, color)
+            superficie.blit(texto_renderizado, ((800 - texto_renderizado.get_width()) // 2, (600 - texto_renderizado.get_height()) // 2))
 
-        # Dibujar el fondo y el texto
-        screen.fill(color_fondo)
-        texto_renderizado = fuente.render(texto, True, color_texto)
-        screen.blit(texto_renderizado, ((800 - texto_renderizado.get_width()) // 2, (600 - texto_renderizado.get_height()) // 2))
+            # Actualizar pantalla
+            pygame.display.flip()
 
-        # Actualizar pantalla
-        pygame.display.flip()
+            # Salir del bucle después de la duración especificada
+            if tiempo_actual - inicio >= duracion * 1000:
+                break
 
-        # Salir del bucle después de la duración especificada
-        if tiempo_actual - inicio >= duracion * 1000:
-            break
+# # Funcion para dibujar los puntos del jugador en la pantalla
+# def dibujar_puntos(pantalla, puntos):
+#     '''
+#     ¿Para qua sirve?
+#     Esta funcion dibuja el puntaje del jugador en la pantalla.
+
+#     ¿Qua parametro acepta?
+#     - pantalla: (pygame.Surface) La superficie donde se dibuja el puntaje.
+#     - puntos: (int) La cantidad de puntos que tiene el jugador.
+
+#     ¿Qua retorna?
+#     - None. La funcion solo dibuja los puntos en la pantalla.
+#     '''
+#     fuente = pygame.font.Font(None, 36)  # Crea una fuente con un tamaño de 36
+#     texto = fuente.render(f"Puntos: {puntos}", True, (BLACK))  # Renderiza el texto con los puntos
+#     pantalla.blit(texto, (600, 10))  # Dibuja el texto en la pantalla
+
+
+# # Función para mostrar un cartel
+# def mostrar_cartel(screen, texto, duracion, color_fondo, color_texto):
+
+#     inicio = pygame.time.get_ticks()  # Tiempo actual en milisegundos
+#     fuente = pygame.font.Font(None, 36)
+#     while True:
+#         tiempo_actual = pygame.time.get_ticks()
+
+#         # Dibujar el fondo y el texto
+#         screen.fill(color_fondo)
+#         texto_renderizado = fuente.render(texto, True, color_texto)
+#         screen.blit(texto_renderizado, ((800 - texto_renderizado.get_width()) // 2, (600 - texto_renderizado.get_height()) // 2))
+
+#         # Actualizar pantalla
+#         pygame.display.flip()
+
+#         # Salir del bucle después de la duración especificada
+#         if tiempo_actual - inicio >= duracion * 1000:
+#             break

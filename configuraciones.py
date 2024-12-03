@@ -1,14 +1,25 @@
 import pygame  # Importa la libreria Pygame para crear el juego.
+import csv
 
-#Pantalla
 ANCHO = 800
 ALTO = 600
-#Tiempo
-TIEMPO = 10000
-# PUNTOS_CORRECTO = 10
-vidas = 3
+punto = 1
+vida = 3
+def abrir_cfg(csv):
+    with open(csv, mode='r', encoding='utf-8') as archivo:
+        lista = []
+        csv_linea =  archivo.readlines()
+        for linea in csv_linea:
+            print(linea)
+    #for i range linea:
+    #    vida =
+    #    tiempo =
+    #    puntos =
+
+abrir_cfg('config.csv')
+        
+
 #hacer archivo config, y leerlo, luego hacer una pantalla para poder congiurar la vida tiempo etc, 
-FPS = 60
 CUADRO_ALTO = 40
 CUADRO_ANCHO = 400  
 

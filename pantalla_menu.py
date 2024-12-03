@@ -57,7 +57,7 @@ def dibujar_menu_botones(pantalla, pos_mouse):
     dibujar_texto_con_boton_transparente(
         pantalla, 
         "configuracion", 
-        0, 550, 200, 50, 
+        300, 400, 200, 50, 
         CYAN2, RED1, 
         pos_mouse
     )

@@ -70,8 +70,9 @@ def dibujar_cuadro_top(pantalla, ranking, posicion_x, posicion_y):
     - Ninguno. La funcion solo se encarga de dibujar el cuadro con los datos en la pantalla.
     """
 
-    pygame.draw.rect(pantalla, CYAN3, (posicion_x, posicion_y, 300, 300))  # El cuadro
-
+    for i, (nombre, puntuacion) in enumerate(ranking[:5]):
+        pygame.draw.rect(pantalla, CYAN3, (posicion_x, posicion_y, 300, 300 + (i * 40)))
+    
     font = pygame.font.SysFont('Arial', 24)
     # Titulo
     texto_top = font.render("Top Ranking", True, BLACK)

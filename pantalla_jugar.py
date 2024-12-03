@@ -161,12 +161,12 @@ def ingreso_nombre(pantalla, pos_mouse):
     '''
     
     csv = Path('ranking_top.csv')  # Ruta del archivo CSV, si lo necesitas para guardado posterior.
-    input_box = pygame.Rect(300, 300, 140, 32)  # Caja de texto para el nombre.
+    input_box = pygame.Rect(300, 300, 340, 32)  # Caja de texto para el nombre.
     color_caja = RED1
     fuente = pygame.font.Font(None, 32)
     activo = False  # Indica si la caja de texto está activa.
     nombre = ''  # Variable que almacenará el nombre ingresado.
-    boton_aceptar = pygame.Rect(300, 350, 140, 32)  # Botón para aceptar el nombre.
+    boton_aceptar = pygame.Rect(350, 350, 140, 32)  # Botón para aceptar el nombre.
     
     while True:
         for evento in pygame.event.get():
@@ -178,7 +178,7 @@ def ingreso_nombre(pantalla, pos_mouse):
                 if input_box.collidepoint(evento.pos):  # Si se hace clic en la caja de texto, activamos la caja.
                     activo = True
                 elif boton_aceptar.collidepoint(evento.pos):  # Si se hace clic en el botón de aceptar, salimos.
-                    if len(nombre) > 1: 
+                    if len(nombre) > 1 and  10 < len(nombre):
                         return nombre
                 else:
                     activo = False  # Si se hace clic fuera de la caja o el botón, desactiva la caja.
@@ -197,7 +197,7 @@ def ingreso_nombre(pantalla, pos_mouse):
         if activo:
             color_caja = RED1
         else:
-            BLACK
+            color_caja = BLACK
         pygame.draw.rect(pantalla, color_caja, input_box, 2)
         
         # Dibuja el texto dentro de la caja de texto.
