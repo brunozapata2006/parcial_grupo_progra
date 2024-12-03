@@ -1,7 +1,11 @@
-import pygame
-import sys
 import random
+import sys
+
+import pygame
+
 from funciones import *
+from funciones_dibujar import *
+
 
 def jugar_ruleta():
     '''

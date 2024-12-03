@@ -1,7 +1,10 @@
 import pygame
-from funciones import *
+
 from colores import *
 from configuraciones import *
+from funciones import *
+from funciones_dibujar import *
+
 
 def dibujar_botones_config(pantalla, pos_mouse):
     

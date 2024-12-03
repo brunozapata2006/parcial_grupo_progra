@@ -1,10 +1,13 @@
+import time
+
 import pygame
-from funciones import *
+
 from colores import *
 from configuraciones import *
+from funciones import *
+from funciones_dibujar import *
 from funciones_preguntas import *
 from ruleta import *
-import time
 
 # Bandera para controlar el clic en el juego
 
@@ -118,7 +121,6 @@ def mostrar_preguntas(pantalla, preguntas, pregunta_actual_index, pos_mouse, vid
     # Retornar los botones, indice de la pregunta actual, respuestas y las vidas visuales
     return botones, pregunta_actual_index, respuestas, vidas_visual
 
-
 def temporizador_descendente(pantalla, segundos, pos_mouse):
     '''
     ¿Para qua sirve?
@@ -148,3 +150,54 @@ def temporizador_descendente(pantalla, segundos, pos_mouse):
         
     # Retornar la superficie del temporizador
     return segundos_pantalla
+
+
+# Funcion para ingresar nombre de jugador
+
+def ingreso_nombre(pantalla, pos_mouse, puntos):
+    '''
+    
+    
+    '''
+    
+    csv = Path('ranking_top.csv')
+    input_box = pygame.Rect(300, 300, 140, 32)
+    color_caja = RED1
+    fuente = pygame.font.Font(None, 32)
+    activo = False
+    nombre = ''
+    boton_aceptar = pygame.Rect(300, 350, 140, 32)
+    
+    while True:
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                if input_box.collidepoint(evento.pos):
+                    activo = not activo
+                else:
+                    activo = False
+            if evento.type == pygame.KEYDOWN:
+                if activo:
+                    if evento.key == pygame.K_RETURN:
+                        print(nombre)
+                        guardar_nombre_csv(nombre, puntos, csv)
+                        return nombre
+                    elif evento.key == pygame.K_BACKSPACE:
+                        nombre = nombre[:-1]
+                    else: #probalo
+                        nombre += evento.unicode
+
+        pantalla.fill(WHITE)
+        color_caja = RED1 if activo else BLACK
+        pygame.draw.rect(pantalla, color_caja, input_box, 2)
+        texto = fuente.render(nombre, True, BLACK)
+        pantalla.blit(texto, (input_box.x + 5, input_box.y + 5))
+        
+        pygame.draw.rect(pantalla, BLACK, boton_aceptar)
+        texto_aceptar = fuente.render("Aceptar", True, WHITE)
+        pantalla.blit(texto_aceptar, (boton_aceptar.x + 5, boton_aceptar.y + 5))
+        
+        # pygame.display.flip()
+        

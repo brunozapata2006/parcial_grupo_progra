@@ -1,7 +1,10 @@
 import pygame
-from funciones import *
+
 from colores import *
 from configuraciones import *
+from funciones import *
+from funciones_dibujar import *
+
 
 # Esta funcion dibuja los botones para cada campo de la pregunta
 def dibujar_botones_agregar_pregunta(pantalla, pos_mouse, cuadro_activo, cuadros_texto):

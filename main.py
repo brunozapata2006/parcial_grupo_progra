@@ -1,16 +1,19 @@
-import pygame  # Importa la libreria Pygame para crear el juego.
 from pathlib import Path  # Para trabajar con rutas de archivos
+
+import pygame  # Importa la libreria Pygame para crear el juego.
+
+from colores import *  # Importa colores predefinidos para usar en el juego (archivo externo).
 from configuraciones import *  # Importa configuraciones globales como colores y tamaños (archivo externo).
 from funciones import *  # Importa funciones auxiliares, por ejemplo para manejar eventos o mostrar texto (archivo externo).
-from colores import *  # Importa colores predefinidos para usar en el juego (archivo externo).
+from funciones_dibujar import *
+from funciones_preguntas import *  # Importa funciones relacionadas con las preguntas (archivo externo).
 from pantalla_cargar_preguntas import *  # Importa la pantalla para cargar preguntas (archivo externo).
+from pantalla_config import *
 from pantalla_easter_egg import *  # Importa la pantalla del easter egg (archivo externo).
 from pantalla_jugar import *  # Importa la pantalla de juego (archivo externo).
 from pantalla_menu import *  # Importa la pantalla del menu principal (archivo externo).
 from pantalla_top import *  # Importa la pantalla para mostrar el top mundial (archivo externo).
 from ruleta import *  # Importa funciones para la ruleta (archivo externo).
-from funciones_preguntas import *  #Importa funciones relacionadas con las preguntas (archivo externo).
-from pantalla_config import *
 
 # Inicializar Pygame
 pygame.init()  # Inicializa todos los modulos necesarios para usar Pygame.
@@ -22,23 +25,10 @@ sonido = pygame.mixer.Sound('assets/musicaa.mp3')  # Carga el archivo de musica.
 sonido.set_volume(0.1)  # Establece el volumen a 0.1.
 sonido.play()  # Reproduce la musica en bucle.
 
+
 # Crear la ventana del juego
 pantalla = pygame.display.set_mode((800, 600), pygame.RESIZABLE)  # Configura la pantalla con tamaño 800x600 (redimensionable).
 
-# Cargar imagenes
-corazon_lleno = pygame.image.load("assets/corazon_lleno.png")  # Carga la imagen del corazon lleno.
-imagen_fondo = pygame.image.load("assets/fondo.jpg")  # Carga la imagen de fondo.
-icono = pygame.image.load('assets/preguntados.jpg')  # Carga el icono de la aplicacion.
-Titulo = pygame.image.load('assets/titulo.png')  # Carga la imagen del titulo.
-
-# Configuracion de la ventana
-pygame.display.set_icon(icono)  # Establece el icono para la ventana del juego.
-
-
-# Pantalla principal y fondo
-imagen_fondo_escalar = pygame.transform.scale(imagen_fondo, (800, 600))  # Redimensiona la imagen de fondo a 800x600.
-Titulo_escalado = pygame.transform.scale(Titulo, (200, 80))  # Redimensiona la imagen del titulo.
-corazon_lleno_escalado = pygame.transform.scale(corazon_lleno, (20, 20))  # Redimensiona la imagen del corazon.
 
 # Variables de control del juego
 jugar = True  # Variable de control para el bucle principal del juego.
@@ -118,8 +108,8 @@ while jugar:
         # Estando en "agregar preguntas"
         elif estado == "agregar preguntas":
             pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo.
-            dibujar_boton_volver_preguntas = dibujar_botones_agregar_pregunta(pantalla, pos_mouse, cuadro_activo, cuadros_texto)  # Dibuja los botones para agregar preguntas.
-            cuadro_activo, cuadros_texto = gestionar_eventos_entrada(evento, cuadro_activo, cuadros_texto)
+            dibujar_boton_volver_preguntas = dibujar_botones_agregar_pregunta(pantalla, pos_mouse, cuadro_activo_preg, cuadros_texto_preg)  # Dibuja los botones para agregar preguntas.
+            cuadro_activo_preg, cuadros_texto_preg = eventos_carg_preguntas(path_csv_cargar, evento, cuadro_activo_preg, cuadros_texto_preg)
             if dibujar_boton_volver_preguntas.collidepoint(pos):
                 estado = "menu"
                 
@@ -146,7 +136,7 @@ while jugar:
         tema_elegido = ''  # Reinicia el tema.
         vidas = 3  # Reinicia las vidas.
         if bandera_juego == True:
-            print(f"tus puntos fueron {puntos}")
+            guardar_nombre_csv(nombre, puntos, 'ranking_top')
             puntos = 0
             bandera_juego = False
 
@@ -170,9 +160,16 @@ while jugar:
                         puntos += 1  # Suma un punto si la respuesta es correcta.
                     else:
                         vidas -= 1  # Resta una vida si la respuesta es incorrecta.
+                        if vidas == 2:
+                            mostrar_cartel(pantalla, "Tienes 2 vidas", 1, BLACK, RED1)          
+                        if vidas == 1:
+                            mostrar_cartel(pantalla, "Tienes 1 vida", 1, BLACK, RED1)
                         
                     pregunta_actual_index += 1  # Avanza al siguiente indice de la pregunta.
             dibujar_puntos(pantalla, puntos)  # Muestra los puntos en la pantalla.
+
+            pantalla.blit(imagen_fondo_escalar, (0, 0))
+            nombre = ingreso_nombre(pantalla, pos_mouse, puntos)
                     
             if vidas == 0 or pregunta_actual_index >= len(preguntas):  # Si las vidas llegan a 0, vuelve al menu o Si ya no hay preguntas, vuelve al menu.
                 estado = "menu" 
@@ -186,9 +183,9 @@ while jugar:
     elif estado == "agregar preguntas":
         pygame.display.set_caption("Agregar preguntas!")
         pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo.
-        dibujar_boton_volver_preguntas = dibujar_botones_agregar_pregunta(pantalla, pos_mouse, cuadro_activo, cuadros_texto)  # Dibuja los botones para agregar preguntas.
+        dibujar_boton_volver_preguntas = dibujar_botones_agregar_pregunta(pantalla, pos_mouse, cuadro_activo_preg, cuadros_texto_preg)  # Dibuja los botones para agregar preguntas.
         if guardado == False:
-            guardar_textos(cuadros_texto, path_csv_cargar)
+            guardar_textos(cuadros_texto_preg, path_csv_cargar)
             guardado = True
     
     elif estado == "configuracion":

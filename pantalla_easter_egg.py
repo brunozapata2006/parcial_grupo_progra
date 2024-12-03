@@ -2,6 +2,8 @@ import pygame
 from funciones import *
 from colores import *
 from configuraciones import *
+from funciones_dibujar import *
+
 
 # Funcion para mostrar una animacion o "easter egg" con imagenes de gatos
 def easter_egg(pantalla, pos_mouse):
