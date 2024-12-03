@@ -154,50 +154,61 @@ def temporizador_descendente(pantalla, segundos, pos_mouse):
 
 # Funcion para ingresar nombre de jugador
 
-def ingreso_nombre(pantalla, pos_mouse, puntos):
+def ingreso_nombre(pantalla, pos_mouse):
+    '''
+    Función que muestra una caja de texto donde el usuario puede ingresar su nombre.
+    Cuando el usuario hace clic en el botón 'Aceptar', devuelve el nombre ingresado.
     '''
     
-    
-    '''
-    
-    csv = Path('ranking_top.csv')
-    input_box = pygame.Rect(300, 300, 140, 32)
+    csv = Path('ranking_top.csv')  # Ruta del archivo CSV, si lo necesitas para guardado posterior.
+    input_box = pygame.Rect(300, 300, 140, 32)  # Caja de texto para el nombre.
     color_caja = RED1
     fuente = pygame.font.Font(None, 32)
-    activo = False
-    nombre = ''
-    boton_aceptar = pygame.Rect(300, 350, 140, 32)
+    activo = False  # Indica si la caja de texto está activa.
+    nombre = ''  # Variable que almacenará el nombre ingresado.
+    boton_aceptar = pygame.Rect(300, 350, 140, 32)  # Botón para aceptar el nombre.
     
     while True:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+            
             if evento.type == pygame.MOUSEBUTTONDOWN:
-                if input_box.collidepoint(evento.pos):
-                    activo = not activo
-                else:
-                    activo = False
-            if evento.type == pygame.KEYDOWN:
-                if activo:
-                    if evento.key == pygame.K_RETURN:
-                        print(nombre)
-                        guardar_nombre_csv(nombre, puntos, csv)
+                if input_box.collidepoint(evento.pos):  # Si se hace clic en la caja de texto, activamos la caja.
+                    activo = True
+                elif boton_aceptar.collidepoint(evento.pos):  # Si se hace clic en el botón de aceptar, salimos.
+                    if len(nombre) > 1: 
                         return nombre
-                    elif evento.key == pygame.K_BACKSPACE:
+                else:
+                    activo = False  # Si se hace clic fuera de la caja o el botón, desactiva la caja.
+            
+            if evento.type == pygame.KEYDOWN:
+                if activo:  # Si la caja de texto está activa, gestionar la escritura.
+                    if evento.key == pygame.K_RETURN:  # Si presionamos Enter, confirmamos el nombre.
+                        print(nombre)
+                        return nombre
+                    elif evento.key == pygame.K_BACKSPACE:  # Si presionamos Backspace, eliminamos el último carácter.
                         nombre = nombre[:-1]
-                    else: #probalo
-                        nombre += evento.unicode
-
-        pantalla.fill(WHITE)
-        color_caja = RED1 if activo else BLACK
+                    else:
+                        nombre += evento.unicode  # Añade el carácter presionado al nombre.
+                        
+        # Dibuja la caja de texto, cambia de color si está activa o no.
+        if activo:
+            color_caja = RED1
+        else:
+            BLACK
         pygame.draw.rect(pantalla, color_caja, input_box, 2)
+        
+        # Dibuja el texto dentro de la caja de texto.
         texto = fuente.render(nombre, True, BLACK)
         pantalla.blit(texto, (input_box.x + 5, input_box.y + 5))
         
+        # Dibuja el botón 'Aceptar'.
         pygame.draw.rect(pantalla, BLACK, boton_aceptar)
         texto_aceptar = fuente.render("Aceptar", True, WHITE)
         pantalla.blit(texto_aceptar, (boton_aceptar.x + 5, boton_aceptar.y + 5))
-        
-        # pygame.display.flip()
-        
+
+        # Actualiza la pantalla
+        pygame.display.update()
+

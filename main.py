@@ -7,6 +7,7 @@ from configuraciones import *  # Importa configuraciones globales como colores y
 from funciones import *  # Importa funciones auxiliares, por ejemplo para manejar eventos o mostrar texto (archivo externo).
 from funciones_dibujar import *
 from funciones_preguntas import *  # Importa funciones relacionadas con las preguntas (archivo externo).
+from funciones_guardar import *
 from pantalla_cargar_preguntas import *  # Importa la pantalla para cargar preguntas (archivo externo).
 from pantalla_config import *
 from pantalla_easter_egg import *  # Importa la pantalla del easter egg (archivo externo).
@@ -15,6 +16,7 @@ from pantalla_menu import *  # Importa la pantalla del menu principal (archivo e
 from pantalla_top import *  # Importa la pantalla para mostrar el top mundial (archivo externo).
 from ruleta import *  # Importa funciones para la ruleta (archivo externo).
 
+
 # Inicializar Pygame
 pygame.init()  # Inicializa todos los modulos necesarios para usar Pygame.
 pygame.mixer.init()  # Inicializa el mezclador de sonidos (para reproducir musica y efectos de sonido).
@@ -22,7 +24,7 @@ pygame.font.init()  # Inicializa el sistema de fuentes para poder renderizar tex
 
 # Cargar sonido de fondo
 sonido = pygame.mixer.Sound('assets/musicaa.mp3')  # Carga el archivo de musica.
-sonido.set_volume(0.1)  # Establece el volumen a 0.1.
+sonido.set_volume(0)  # Establece el volumen a 0.1.
 sonido.play()  # Reproduce la musica en bucle.
 
 
@@ -40,7 +42,7 @@ path_csv_cargar = Path('preguntas_cargadas.csv')  # Archivo donde se guardan las
 cuadro_activo = 0  # indice del cuadro activo (inicia en 0)
 cuadros_texto = ["", "", "", "", ""]  # Lista de cuadros de texto (pregunta y respuestas)
 
-path_csv = Path('ranking_top.csv')
+path_csv_ranking = Path('ranking_top.csv')
 
 reloj = pygame.time.Clock()  # Crea un reloj para controlar los FPS.
 
@@ -80,7 +82,7 @@ while jugar:
                 jugar = False  # Sale del juego si se hace clic en "Salir".
             elif 300 <= pos[0] <= 500 and 300 <= pos[1] <= 350:
                 estado = "agregar preguntas"  # Cambia al estado de "agregar preguntas".
-            elif 700 <= pos[0] <= 800 and 550 <= pos[1] <= 600:
+            elif 0 <= pos[0] <= 200 and 550 <= pos[1] <= 600:
                 estado = "configuracion"
             elif 600 <= pos[0] <= 50 and 550 <= pos[1] <= 580:
                 print("y esto?")
@@ -97,19 +99,19 @@ while jugar:
 
             if pregunta_actual_index >= len(preguntas):  # Si ya no hay mas preguntas, vuelve al inicio.
                 pregunta_actual_index = 0
-
+                
         # Estando en "Ver top mundiales"
         elif estado == "Ver top mundiales":
             dibujar_boton_volver_top = dibujar_botones_top_mundial(pantalla, pos_mouse)  # Dibuja los botones del top mundial.
-            mostrar_top(pantalla, path_csv)
+            mostrar_top(pantalla, path_csv_ranking)
             if dibujar_boton_volver_top.collidepoint(pos):
                 estado = "menu"
                 
         # Estando en "agregar preguntas"
         elif estado == "agregar preguntas":
             pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo.
-            dibujar_boton_volver_preguntas = dibujar_botones_agregar_pregunta(pantalla, pos_mouse, cuadro_activo_preg, cuadros_texto_preg)  # Dibuja los botones para agregar preguntas.
-            cuadro_activo_preg, cuadros_texto_preg = eventos_carg_preguntas(path_csv_cargar, evento, cuadro_activo_preg, cuadros_texto_preg)
+            dibujar_boton_volver_preguntas = dibujar_botones_agregar_pregunta(pantalla, pos_mouse, cuadro_activo, cuadros_texto)  # Dibuja los botones para agregar preguntas.
+            cuadro_activo, cuadros_texto = eventos_carg_preguntas(path_csv_cargar, evento, cuadro_activo, cuadros_texto)
             if dibujar_boton_volver_preguntas.collidepoint(pos):
                 estado = "menu"
                 
@@ -136,11 +138,12 @@ while jugar:
         tema_elegido = ''  # Reinicia el tema.
         vidas = 3  # Reinicia las vidas.
         if bandera_juego == True:
-            guardar_nombre_csv(nombre, puntos, 'ranking_top')
+            pantalla.blit(imagen_fondo_escalar, (0, 0))
+            nombre = ingreso_nombre(pantalla, pos_mouse)
+            guardar_nombre_csv(nombre, puntos, path_csv_ranking)
             puntos = 0
             bandera_juego = False
 
-        
     elif estado == "juego":
         pygame.display.set_caption("Vamos a jugar")
         pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo en el juego.
@@ -167,30 +170,27 @@ while jugar:
                         
                     pregunta_actual_index += 1  # Avanza al siguiente indice de la pregunta.
             dibujar_puntos(pantalla, puntos)  # Muestra los puntos en la pantalla.
-
-            pantalla.blit(imagen_fondo_escalar, (0, 0))
-            nombre = ingreso_nombre(pantalla, pos_mouse, puntos)
-                    
-            if vidas == 0 or pregunta_actual_index >= len(preguntas):  # Si las vidas llegan a 0, vuelve al menu o Si ya no hay preguntas, vuelve al menu.
+            if vidas == 0 or pregunta_actual_index >= len(preguntas):  # Si las vidas llegan a 0, vuelve al menu o Si ya no hay preguntas, vuelve al menu
                 estado = "menu" 
         
     elif estado == "Ver top mundiales":
         pygame.display.set_caption("Vamos a ver los tops!")
         pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo.
         botones_tops_mundiales = dibujar_botones_top_mundial(pantalla, pos_mouse)  # Dibuja los botones para el top mundial.
-        mostrar_top(pantalla, path_csv)
+        mostrar_top(pantalla, path_csv_ranking)
         
     elif estado == "agregar preguntas":
         pygame.display.set_caption("Agregar preguntas!")
         pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo.
-        dibujar_boton_volver_preguntas = dibujar_botones_agregar_pregunta(pantalla, pos_mouse, cuadro_activo_preg, cuadros_texto_preg)  # Dibuja los botones para agregar preguntas.
+        dibujar_boton_volver_preguntas = dibujar_botones_agregar_pregunta(pantalla, pos_mouse, cuadro_activo, cuadros_texto)  # Dibuja los botones para agregar preguntas.
         if guardado == False:
-            guardar_textos(cuadros_texto_preg, path_csv_cargar)
+            guardar_textos(cuadros_texto, path_csv_cargar)
             guardado = True
     
     elif estado == "configuracion":
         pantalla.blit(imagen_fondo_escalar, (0, 0))
         dibujar_boton_volver_config = dibujar_botones_config(pantalla, pos_mouse)
+        
 
 
     elif estado == "o.O":

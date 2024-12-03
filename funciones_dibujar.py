@@ -1,42 +1,57 @@
 from pathlib import Path  # Para trabajar con rutas de archivos
 
 import pygame  # Libreria principal para crear juegos en 2D
-from pygame import \
-    surface  # Importa la clase 'surface' de pygame para trabajar con superficies (pantallas)
+from pygame import surface  # Importa la clase 'surface' de pygame para trabajar con superficies (pantallas)
 
 from colores import *  # Importa los colores definidos en otro archivo
 from configuraciones import *  # Importa configuraciones (posiblemente con mas valores de colores, configuraciones de juego, etc.)
 
 
-# Funcion para dibujar botones con texto en un fondo transparente, con deteccion de hover (cuando el mouse pasa sobre ellos)
-def dibujar_texto_con_boton_transparente(pantalla:surface, texto, x:int, y:int, ancho:int, alto:int, color_normal:tuple, color_hover:tuple, pos_mouse):
+def dibujar_texto_con_boton_transparente(pantalla: surface, texto: str, x: int, y: int, ancho: int, alto: int, color_normal: tuple, color_hover: tuple, pos_mouse):
     ''' 
-    ¿Para qua sirve?
-    Dibuja un boton con texto que cambia de color cuando el mouse pasa por encima (hover).
+    ¿Para qué sirve?
+    Dibuja un botón con texto que cambia de color cuando el mouse pasa por encima (hover). 
+    Se utiliza para crear botones interactivos en la pantalla.
 
-    ¿Qua parametro acepta?
-    - pantalla: (pygame.Surface) La superficie donde se dibuja el boton.
-    - texto: (str) El texto que se mostrara en el boton.
-    - x: (int) La posicion en el eje X de la esquina superior izquierda del boton.
-    - y: (int) La posicion en el eje Y de la esquina superior izquierda del boton.
-    - ancho: (int) El ancho del boton.
-    - alto: (int) El alto del boton.
-    - color_normal: (tuple) El color del texto cuando no hay hover.
-    - color_hover: (tuple) El color del texto cuando el mouse esta encima del boton.
-    - pos_mouse: (tuple) Las coordenadas actuales del mouse.
+    ¿Qué parámetros acepta?
+    - pantalla: (pygame.Surface) La superficie donde se dibuja el botón (por ejemplo, la pantalla principal del juego).
+    - texto: (str) El texto que se mostrará en el botón.
+    - x: (int) La posición en el eje X de la esquina superior izquierda del botón.
+    - y: (int) La posición en el eje Y de la esquina superior izquierda del botón.
+    - ancho: (int) El ancho del botón.
+    - alto: (int) El alto del botón.
+    - color_normal: (tuple) El color del texto cuando no hay hover (cuando el mouse no está sobre el botón).
+    - color_hover: (tuple) El color del texto cuando el mouse está encima del botón (hover).
+    - pos_mouse: (tuple) Las coordenadas actuales del mouse en la pantalla.
 
-    ¿Qua retorna?
-    - pygame.Surface: El texto renderizado, que actua como el "boton" visual.
+    ¿Qué retorna?
+    - pygame.Surface: El objeto Surface que contiene el texto renderizado, que actúa como el "botón" visual.
     '''
     
-    pos_mouse = pygame.mouse.get_pos()  # Obtiene la posicion del mouse
-    color_texto = color_hover if x <= pos_mouse[0] <= x + ancho and y <= pos_mouse[1] <= y + alto else color_normal  # Cambia el color si el mouse esta sobre el boton
-    fuente = pygame.font.SysFont("Showcard Gothic", 30)  # Selecciona la fuente
-    texto_renderizado = fuente.render(str(texto), True, color_texto)  # Renderiza el texto con el color adecuado
-    texto_rect = texto_renderizado.get_rect(center=(x + ancho // 2, y + alto // 2))  # Ajusta el rectangulo para centrar el texto en el boton
-    mostrar_texto = pantalla.blit(texto_renderizado, texto_rect)  # Dibuja el texto en la pantalla
+    # Obtiene la posición del mouse (actualización de las coordenadas del puntero)
+    pos_mouse = pygame.mouse.get_pos()
+    
+    # Verifica si el mouse está sobre el botón (detección de hover)
+    if x <= pos_mouse[0] <= x + ancho and y <= pos_mouse[1] <= y + alto:
+        color_texto = color_hover  # Si el mouse está sobre el botón, usa el color hover
+    else:
+        color_texto = color_normal  # Si el mouse no está sobre el botón, usa el color normal
+    
+    # Selecciona la fuente para el texto
+    fuente = pygame.font.SysFont("Showcard Gothic", 30)
+    
+    # Renderiza el texto con el color adecuado (normal o hover)
+    texto_renderizado = fuente.render(str(texto), True, color_texto)
+    
+    # Ajusta el rectángulo de la superficie del texto para centrarlo dentro del botón
+    texto_rect = texto_renderizado.get_rect(center=(x + ancho // 2, y + alto // 2))
+    
+    # Dibuja el texto renderizado en la pantalla en la posición centrada
+    mostrar_texto = pantalla.blit(texto_renderizado, texto_rect)
+    
+    # Retorna la superficie con el texto renderizado, que representa el "botón" visual
+    return mostrar_texto
 
-    return mostrar_texto  # Retorna la superficie con el texto renderizado
 
 
 # Funcion para dibujar vidas (corazones) en la pantalla

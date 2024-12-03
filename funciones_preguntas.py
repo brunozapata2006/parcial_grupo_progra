@@ -54,19 +54,3 @@ def cargar_preguntas_desde_csv(archivo_csv):
             # Almacenamos la pregunta y sus respuestas como una lista
             preguntas.append([pregunta] + respuestas + [respuesta_correcta])  
     return preguntas  # Retorna la lista de preguntas con sus respuestas
-
-# # Funcion para mezclar las respuestas de una pregunta
-# def mezclar_respuestas(lista_respuestas):
-#     ''' 
-#     ¿Para qua sirve?
-#     Esta funcion mezcla las respuestas de una pregunta para que no siempre estan en el mismo orden.
-    
-#     ¿Qua parametro acepta?
-#     - respuestas: (list) Lista de respuestas a una pregunta. Es una lista con las opciones de respuestas para una pregunta.
-    
-#     ¿Qua retorna?
-#     - respuestas_mezcladas: (list) Lista de respuestas mezcladas. Devuelve una nueva lista donde las respuestas estan en un orden aleatorio.
-#     '''
-#     respuestas_mezcladas = lista_respuestas.copy()  # Hacemos una copia de la lista de respuestas
-#     random.shuffle(respuestas_mezcladas)  # Mezclamos las respuestas usando random.shuffle
-#     return respuestas_mezcladas  # Retorna la lista de respuestas mezcladas

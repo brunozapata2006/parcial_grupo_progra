@@ -20,16 +20,11 @@ def dibujar_botones_top_mundial(pantalla, pos_mouse):
     ¿Qua retorna?
     - boton_volver_menu: El rectangulo que representa el boton "Volver al Menu" para su deteccion de colision.
     '''
-    pygame.display.set_caption("Vamos a cargar preguntas!")
+    pygame.display.set_caption("Vamos a ver el top!")
 
 
-    # Dibujar el boton de "Volver al Menu"
     boton_volver_menu = dibujar_texto_con_boton_transparente(pantalla, "Volver al Menu", 620, 550, 200, 50, WHEAT1, RED1, pos_mouse)
-    
-    # Actualizar la pantalla
-    #pygame.display.flip() ###############
-    
-    # Retornar el boton para verificar colision
+
     return boton_volver_menu
 
 
@@ -83,7 +78,7 @@ def dibujar_cuadro_top(pantalla, ranking, posicion_x, posicion_y):
     pantalla.blit(texto_top, (posicion_x + 75, posicion_y + 10))  # Titulo centrado
 
     # Muestra el top
-    for i, (nombre, puntuacion) in enumerate(ranking[:5]):  # Solo muestra los primeros 5
+    for i, (nombre, puntuacion) in enumerate(ranking):  # Solo muestra los primeros 5
         texto = font.render(f"{i + 1}. {nombre}: {puntuacion}", True, BLACK)
         pantalla.blit(texto, (posicion_x + 20, posicion_y + 40 + (i * 40))) #centrar texto
 
@@ -105,27 +100,3 @@ def mostrar_top(pantalla, path_csv):
 
     # Dibujar el cuadro del top
     dibujar_cuadro_top(pantalla, top_ranking, 250, 100)
-
-#funcion que pida el nombre del jugadoy y lo guarde en el csv correspondiente
-
-def dibujar_boton_agregar_nombre(pantalla, pos_mouse, nombre):
-    '''
-    ¿Para qua sirve?
-    Dibuja los botones en la pantalla para la seccion del ranking mundial de puntuaciones.
-
-    ¿Qua parametro acepta?
-    - pantalla: (pygame.Surface) La superficie donde se dibujan los botones.
-    - pos_mouse: (tuple) La posicion del mouse para detectar el hover.
-    - nombre: (str) El nombre del jugador que se esta ingresando.
-
-    ¿Qua retorna?
-    - boton_agregar_nombre: El rectangulo que representa el boton "Agregar Nombre" para su deteccion de colision.
-    '''
-    pygame.display.set_caption("Vamos a cargar preguntas!")
-
-    # Dibujar el boton de "agregar nombre"
-    boton_agregar_nombre = dibujar_texto_con_boton_transparente(pantalla, "Agregar Nombre", 620, 550, 200, 50, WHEAT1, RED1, pos_mouse)
-    
-    
-    
-    

@@ -8,7 +8,7 @@ TIEMPO = 10000
 # PUNTOS_CORRECTO = 10
 vidas = 3
 #hacer archivo config, y leerlo, luego hacer una pantalla para poder congiurar la vida tiempo etc, 
-FPS = 240
+FPS = 60
 CUADRO_ALTO = 40
 CUADRO_ANCHO = 400  
 
