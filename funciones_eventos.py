@@ -65,16 +65,11 @@ def eventos_carg_vidas_tiempo(csv, evento, cuadro_activo, cuadros_texto):
                 if cuadro_activo < 1: # Si no estamos en el último cuadro
                     cuadro_activo += 1  # Cambia al siguiente cuadro
                 else:
-                    try:
-                        guardar_textos(cuadros_texto, path_csv)  # Guarda los textos en el archivo
-                        cuadros_texto = [""] * 3  # Reinicia los cuadros de texto
-                        cuadro_activo = 0  # Reinicia al primer cuadro
-                    except Exception as e:
-                        print(f"Error al guardar los textos: {e}")  # Manejo básico de errores
+                    guardar_textos(cuadros_texto, path_csv)  # Guarda los textos en el archivo
+                    cuadros_texto = [""] * 3  # Reinicia los cuadros de texto
+                    cuadro_activo = 0  # Reinicia al primer cuadro
             else:
                 if len(cuadros_texto[cuadro_activo]) < 50:  # Limita el texto a 50 caracteres
                     cuadros_texto[cuadro_activo] += evento.unicode  # Agrega el carácter presionado
                 
     return cuadro_activo, cuadros_texto
-
-    

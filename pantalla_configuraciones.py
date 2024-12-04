@@ -1,7 +1,7 @@
 import pygame
 from colores import *
 from configuraciones import *
-from funciones import *
+from funciones_eventos import *
 from funciones_dibujar import *
 import csv
 
@@ -33,7 +33,7 @@ def dibujar_botones_configuraciones(pantalla, pos_mouse, cuadro_activo, cuadros_
         pygame.draw.rect(pantalla, color, (x, y, CUADRO_ANCHO, CUADRO_ALTO)) # Dibujar el cuadro de texto
         
         if cuadros_texto[i] == "":
-            texto = ["vidas", "tiempo", "puntos"][i] # Texto predeterminado para cada cuadro
+            texto = ["vidas", "tiempo(en seg)", "puntos"][i] # Texto predeterminado para cada cuadro
             mostrar_texto(pantalla, texto, x + 10, y + 5, color=GRAY, font_size=25) # Mostrar el texto predeterminado
         else:
             mostrar_texto(pantalla, cuadros_texto[i], x + 10, y + 5) # Mostrar el texto introducido en el cuadro de texto
@@ -58,7 +58,7 @@ def guardar_cfg(vida, tiempo, punto, csv_path):
     '''
     with open(csv_path, mode='w', newline='', encoding='utf-8') as archivo: # Modo escritura
         escritor = csv.writer(archivo) # Crear objeto escritor
-        escritor.writerow(["vida", "tiempo", "punto"]) # Escribir la cabecera
+        escritor.writerow(["vida", "tiempo(en seg)", "punto"]) # Escribir la cabecera
         escritor.writerow([vida, tiempo, punto]) # Escribir los valores de vida, tiempo y punto
 
 def eventos_configuracion(evento, cuadro_activo, cuadros_texto):

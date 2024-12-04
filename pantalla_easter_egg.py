@@ -1,5 +1,5 @@
 import pygame
-from funciones import *
+from funciones_eventos import *
 from colores import *
 from configuraciones import *
 from funciones_dibujar import *

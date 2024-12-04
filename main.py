@@ -4,7 +4,7 @@ import pygame  # Importa la libreria Pygame para crear el juego.
 
 from colores import *  # Importa colores predefinidos para usar en el juego (archivo externo).
 from configuraciones import *  # Importa configuraciones globales como colores y tamaños (archivo externo).
-from funciones import *  # Importa funciones auxiliares, por ejemplo para manejar eventos o mostrar texto (archivo externo).
+from funciones_eventos import *  # Importa funciones auxiliares, por ejemplo para manejar eventos o mostrar texto (archivo externo).
 from funciones_dibujar import *
 from funciones_preguntas import *  # Importa funciones relacionadas con las preguntas (archivo externo).
 from funciones_guardar import *
@@ -19,6 +19,7 @@ from pantalla_configuraciones import * # Importa la pantalla de configuraciones 
 from eventos import *
 from pantalla_configuraciones import pantalla_configuraciones
 from configuraciones  import *
+from funciones_tiempo import *
 
 # Inicializar Pygame
 pygame.init()  # Inicializa todos los modulos necesarios para usar Pygame.
@@ -27,8 +28,13 @@ pygame.font.init()  # Inicializa el sistema de fuentes para poder renderizar tex
 
 # Cargar sonido de fondo
 sonido = pygame.mixer.Sound('assets/musicaa.mp3')  # Carga el archivo de musica.
-sonido.set_volume(0)  # Establece el volumen a 0.1.
-sonido.play()  # Reproduce la musica en bucle.
+sonido.set_volume(0.1)  # Establece el volumen a 0.1.
+# sonido.play()  # Reproduce la musica en bucle.
+
+
+sonido_resta = pygame.mixer.Sound('assets/resta.mp3')  # Carga el archivo de musica.
+sonido_resta.set_volume(0.1)  # Establece el volumen a 0.1.
+
 
 
 # Crear la ventana del juego
@@ -41,11 +47,11 @@ estado = "menu"  # Estado inicial del juego (en el menu principal).
 
 # Variables globales para las preguntas
 preguntas_guardadas = []  # Lista de preguntas guardadas
-path_csv_cargar = Path('preguntas_cargadas.csv')  # Archivo donde se guardan las preguntas
 cuadro_activo = 0  # indice del cuadro activo (inicia en 0)
 cuadros_texto_config = ["", "", ""]
 cuadros_texto_preg = ["", "", "", "", ""]  # Lista de cuadros de texto (pregunta y respuestas)
 
+path_csv_cargar = Path('preguntas_cargadas.csv')  # Archivo donde se guardan las preguntas
 path_csv_ranking = Path('ranking_top.csv')
 path_csv_config = Path('configuracion.csv')
 
@@ -66,14 +72,13 @@ pygame.time.set_timer(timer_event, 1000)  # 1 segundo (1000 ms)
 # Variables para contar tiempo
 segundos_actuales = 0
 minutos_actuales = 0
+tiempo_restante = 5  # Inicializa el tiempo de la pregunta en 5 segundos
+tiempo_inicial = pygame.time.get_ticks()  # Tiempo inicial al comenzar el juego
 
 
 guardado_preg = False
 guardado_config = False
-
 bandera_juego = False
-configuraciones = abrir_cfg("config.csv")
-
 
 # Bucle principal donde ocurre todo
 while jugar:
@@ -84,14 +89,19 @@ while jugar:
             jugar = False  # Termina el juego si se cierra la ventana.
         
         if evento.type == pygame.MOUSEBUTTONDOWN:
-            pos = evento.pos  # Obtiene la posicion del clic del mouse.
-            bandera_click = True  # Marca que se hizo un clic.
-        if evento.type == timer_event:
-            segundos_actuales += 1 # Suma un segundo
-        if segundos_actuales == 60: # Si pasan 60 segundos
-                segundos_actuales = 0 # Reinicia los segundos
-                minutos_actuales += 1 # Suma un minuto
-                tiempo_en_formato = f"{str(minutos_actuales).zfill(2)}:{str(segundos_actuales).zfill(2)}" # Formato MM:SS
+            pos = evento.pos  
+            bandera_click = True  # Marca que se hizo clic
+        if evento.type == pygame.USEREVENT + 1:  # Evento de temporizador
+            tiempo_actual = pygame.time.get_ticks()  # Obtener el tiempo actual
+            if tiempo_actual - tiempo_inicial >= 1000:  # Si ha pasado un segundo
+                tiempo_restante -= 1
+                tiempo_inicial = tiempo_actual  # Reinicia el temporizador
+
+                if tiempo_restante <= 0:  # Si el tiempo llega a 0
+                    vida -= 1  # Resta vida
+                    pregunta_actual_index += 1  # Pasa a la siguiente pregunta
+                    tiempo_restante = 5  # Reinicia el tiempo a 5 segundos
+                    
         # Estando en el menu
         if estado == "menu":
             # Detectar clics en los botones del menu
@@ -99,17 +109,15 @@ while jugar:
                 estado = "juego"  # Cambia al estado de "juego".
             elif 300 <= pos[0] <= 500 and 200 <= pos[1] <= 250:
                 estado = "Ver top mundiales"  # Cambia al estado de "Ver top mundiales".
-            elif 700 <= pos[0] <= 740 and 550 <= pos[1] <= 580:
+            elif 300 <= pos[0] <= 500 and 500 <= pos[1] <= 600:
                 jugar = False  # Sale del juego si se hace clic en "Salir".
             elif 300 <= pos[0] <= 500 and 300 <= pos[1] <= 350:
                 estado = "agregar preguntas"  # Cambia al estado de "agregar preguntas".
             elif 300 <= pos[0] <= 500 and 400 <= pos[1] <= 600:
                 estado = "configuracion"
-                #300, 400
             elif 50 <= pos[0] <= 100 and 50 <= pos[1] <= 100:
-                print("y esto?")
                 estado = "o.O" 
-        
+
         # Estando en el estado "juego"
         elif estado == "juego":
             pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo en el juego.
@@ -117,11 +125,13 @@ while jugar:
                 tema_elegido = jugar_ruleta()  # Llama a la funcion para jugar la ruleta y elegir un tema.
                 tema_elegido = tema_elegido[1]  # El tema elegido es el segundo elemento del retorno de la ruleta.
             preguntas = cargar_preguntas_desde_csv(elegir_tema(tema_elegido))  # Carga las preguntas segun el tema elegido.
-            botones = mostrar_preguntas(pantalla, preguntas, pregunta_actual_index, pos_mouse, vidas)  # Muestra las preguntas y los botones de respuestas.
+            botones = mostrar_preguntas(pantalla, preguntas, pregunta_actual_index, pos_mouse, vida)  # Muestra las preguntas y los botones de respuestas.
 
-            if pregunta_actual_index >= len(preguntas):  # Si ya no hay mas preguntas, vuelve al inicio.
-                pregunta_actual_index = 0
-                
+            # Configuración inicial del juego
+            configuraciones = abrir_cfg("config.csv")
+            vida, tiempo, punto = configuraciones
+            tiempo_inicio = pygame.time.get_ticks()  # Marca el inicio del tiempo
+    
         # Estando en "Ver top mundiales"
         elif estado == "Ver top mundiales":
             dibujar_boton_volver_top = dibujar_botones_top_mundial(pantalla, pos_mouse)  # Dibuja los botones del top mundial.
@@ -139,15 +149,15 @@ while jugar:
                 
         elif estado == "configuracion":
             nuevo_estado = pantalla_configuraciones(pantalla, pos_mouse, "config.csv") # Muestra la pantalla de configuraciones.
+            dibujar_boton_volver_config = dibujar_texto_con_boton_transparente(pantalla, "Volver al Menu", 620, 550, 200, 50, WHEAT1, RED1, pos_mouse) # Dibuja el boton "Volver al Menu".
             if nuevo_estado == "menu": # Si se hace clic en "Volver al Menu".
                 estado = "menu" # Vuelve al menu principal.
                 
-             
             
         # Estando en el easter egg
         elif estado == "o.O":
             dibujar_boton_volver_gatitos = easter_egg(pantalla, pos_mouse) # Dibuja la pantalla del easter egg.
-            if dibujar_boton_volver_config.collidepoint(pos): # Si se hace clic en "Volver al Menu".
+            if dibujar_boton_volver_gatitos.collidepoint(pos): # Si se hace clic en "Volver al Menu".
                 estado = "menu"
         
     # Redibujar la pantalla segun el estado
@@ -159,7 +169,7 @@ while jugar:
         botones_menu = dibujar_menu_botones(pantalla, pos_mouse)  # Dibuja los botones del menu.
         pantalla.blit(Titulo_escalado, (300, 20))  # Dibuja el titulo escalado en la pantalla.
         tema_elegido = ''  # Reinicia el tema.
-        vidas = 3  # Reinicia las vidas.
+        vidas = vida
         if bandera_juego == True:
             pantalla.blit(imagen_fondo_escalar, (0, 0)) # Dibuja el fondo en el juego.
             nombre = ingreso_nombre(pantalla, pos_mouse) # Pide el nombre del jugador.
@@ -167,36 +177,39 @@ while jugar:
             puntos = 0 # Reinicia los puntos.
             bandera_juego = False # Reinicia la bandera del juego.
 
+    # Estado del juego
     elif estado == "juego":
-        pygame.display.set_caption("Vamos a jugar") # Establece el titulo de la ventana.
+        pygame.display.set_caption("Vamos a jugar")
         pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo en el juego.
         if tema_elegido != '':  # Si ya se eligio un tema.
+            
+            if tiempo_restante > 0:
+                fuente_tiempo = pygame.font.Font(None, 32)
+                mostrar_tiempo_restante(pantalla, tiempo_restante, fuente_tiempo, (0, 0, 0))  # Muestra el tiempo en pantalla
             bandera_juego = True
             botones, pregunta_actual_index, respuestas, vidas_vis = mostrar_preguntas(pantalla, preguntas, pregunta_actual_index, pos_mouse, vidas)  # Muestra las preguntas.
-
             for i, boton in enumerate(botones):
                 if boton.collidepoint(pos) and bandera_click:  # Si se hace clic en una respuesta.
-                    pregunta = preguntas[pregunta_actual_index] # Obtiene la pregunta actual.
+                    pregunta = preguntas[pregunta_actual_index]
                     respuestas = pregunta[1:]  # Las respuestas estan en los indices 1 y siguientes.
                     
-                    respueta_elegida = respuestas[i] # La respuesta elegida es la que corresponde al indice del boton.
+                    respueta_elegida = respuestas[i]
                     respuesta_correcta = pregunta[-1]  # La ultima respuesta es la correcta.
                     
                     if respueta_elegida == respuesta_correcta:
                         puntos += punto  # Suma un punto si la respuesta es correcta.
                     else:
-                        vidas -= 1  # Resta una vida si la respuesta es incorrecta.
-                        if vidas == 2:
-                            mostrar_texto(pantalla, "Tienes 2 vidas",400, 300, permitir_segundos=True, duracion=1)   # Muestra un mensaje si quedan 2 vidas.        
-                        if vidas == 1:
-                            mostrar_texto(pantalla, "Tienes 1 vida",400, 300, permitir_segundos=True, duracion=1)  # Muestra un mensaje si queda 1 vida.
-
-                    dibujar_texto_con_boton_transparente(pantalla,segundos_actuales, 300,300, 100,100, RED1, RED1,pos_mouse) # Muestra el tiempo en pantalla
+                        vidas -= 1 # Resta una vida si la respuesta es incorrecta.
+                        
                     pregunta_actual_index += 1  # Avanza al siguiente indice de la pregunta.
-            mostrar_texto(pantalla, f"Puntos: {puntos}",(600), (10))  # Muestra los puntos en la pantalla.
-
-            if vidas == 0 or pregunta_actual_index >= len(preguntas):  # Si las vidas llegan a 0, vuelve al menu o Si ya no hay preguntas, vuelve al menu
+                    tiempo_restante = tiempo
+            mostrar_texto(pantalla, f"Puntos: {puntos}", 600, 10)  # Muestra los puntos
+                
+            if vidas == 0 or pregunta_actual_index >= len(preguntas):  # Si las vidas llegan a 0, vuelve al menu o Si ya no hay preguntas, vuelve al menu.
                 estado = "menu" 
+                
+                
+        
         
     elif estado == "Ver top mundiales":
         pygame.display.set_caption("Vamos a ver los tops!") # Establece el titulo de la ventana.

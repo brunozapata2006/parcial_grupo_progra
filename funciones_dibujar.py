@@ -27,7 +27,6 @@ def dibujar_texto_con_boton_transparente(pantalla: surface, texto: str, x: int, 
     ¿Qué retorna?
     - pygame.Surface: El objeto Surface que contiene el texto renderizado, que actúa como el "botón" visual.
     '''
-    
     # Obtiene la posición del mouse (actualización de las coordenadas del puntero)
     pos_mouse = pygame.mouse.get_pos()
     
@@ -76,7 +75,7 @@ def dibujar_vidas(pantalla, vidas):
 
 
 # Funcion para mostrar texto en la pantalla
-def mostrar_texto(superficie, texto, x=None, y=None, color=BLACK, color_fondo=WHEAT1, font_size=30, permitir_segundos = False, duracion = None): # Por defecto, el texto se muestra en el centro de la pantalla
+def mostrar_texto(superficie, texto, x=None, y=None, color=BLACK, color_fondo=WHEAT1, font_size=30): # Por defecto, el texto se muestra en el centro de la pantalla
     ''' 
     ¿Para qué sirve?
     Esta función permite mostrar un texto en una superficie de Pygame en una posición específica. 
@@ -90,34 +89,13 @@ def mostrar_texto(superficie, texto, x=None, y=None, color=BLACK, color_fondo=WH
     - color: (tuple) El color del texto. Por defecto es BLACK.
     - fuente: (str) El nombre de la fuente utilizada para el texto. Por defecto es 'Showcard Gothic'.
     - font_size: (int) El tamaño de la fuente del texto. Por defecto es 30.
-    - permitir_segundos: (bool) Activa o desactiva el temporizador para mostrar el texto por una duración limitada. Por defecto es False.
-    - duracion: (int) Tiempo en segundos durante el cual se muestra el texto si `permitir_segundos` es True. Por defecto es None.
+
 
     ¿Qué retorna?
     - None. La función no devuelve ningún valor. Su propósito es dibujar el texto en la pantalla.
 
-    Detalles adicionales:
-    - Si `permitir_segundos` es True y se pasa un valor a `duracion`, el texto se mostrará en pantalla durante esa cantidad de segundos antes de desaparecer.
-    - Si `permitir_segundos` es False, el texto se dibuja de manera permanente sin temporizador.
     '''
     fuente = pygame.font.Font(None, font_size)  # Crea un objeto fuente con el tamaño especificado
     texto_renderizado = fuente.render(texto, True, color)  # Renderiza el texto con la fuente y el color
     superficie.blit(texto_renderizado, (x, y))  # Dibuja el texto en la superficie en la posicion (x, y)
-
-    if permitir_segundos == True:
-        inicio = pygame.time.get_ticks()  # Tiempo actual en milisegundos
-        while True:
-            tiempo_actual = pygame.time.get_ticks() # Tiempo actual en milisegundos
-
-            # Dibujar el fondo y el texto
-            superficie.fill(color_fondo) # Rellena la superficie con un color de fondo
-            texto_renderizado = fuente.render(texto, True, color) # Renderiza el texto con la fuente y el color
-            superficie.blit(texto_renderizado, ((800 - texto_renderizado.get_width()) // 2, (600 - texto_renderizado.get_height()) // 2)) # Dibuja el texto en el centro de la pantalla
-
-            # Actualizar pantalla
-            #pygame.display.flip()
-
-            # Salir del bucle después de la duración especificada
-            if tiempo_actual - inicio >= duracion * 1000:
-                break
 

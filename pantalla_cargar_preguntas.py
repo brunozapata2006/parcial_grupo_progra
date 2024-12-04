@@ -2,7 +2,7 @@ import pygame
 
 from colores import *
 from configuraciones import *
-from funciones import *
+from funciones_eventos import *
 from funciones_dibujar import *
 
 

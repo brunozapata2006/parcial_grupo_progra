@@ -4,6 +4,7 @@ import csv
 ANCHO = 800 # Ancho de la ventana del juego.
 ALTO = 600 # Alto de la ventana del juego.
 
+
 def abrir_cfg(csv_path):
     '''
     ¿Para qué sirve?
@@ -13,21 +14,41 @@ def abrir_cfg(csv_path):
     - csv_path: (str) La ruta del archivo CSV que se abrirá.
     
     ¿Qué retorna?
-    - (int, int, int): Devuelve una tupla con los valores de vida, tiempo y punto leídos del archivo CSV
-    
+    - (int, int, int): Devuelve una tupla con los valores de vida, tiempo y punto leídos del archivo CSV.
     '''
-    with open(csv_path, mode='r', encoding='utf-8') as archivo: # Modo lectura
-        lector = csv.reader(archivo) # Crear objeto lector
+    # Valores por defecto
+    vida_defecto = 3
+    tiempo_defecto = 5
+    punto_defecto = 1
+
+    with open(csv_path, mode='r', encoding='utf-8') as archivo:  # Modo lectura
+        lector = csv.reader(archivo)  # Crear objeto lector
         next(lector)  # Saltar la cabecera
         for linea in lector:
-            vida = int(linea[0]) # Convertir a entero
-            tiempo = int(linea[1]) # Convertir a entero
-            punto = int(linea[2]) # Convertir a entero
-    return vida, tiempo, punto # Devolver los valores de vida, tiempo y punto
+            # Validar y asignar valores para cada campo
+            if linea[0].strip():  # Si no está vacío o en blanco
+                vida = int(linea[0])
+            else:
+                vida = vida_defecto
+
+            if linea[1].strip():
+                tiempo = int(linea[1])
+            else:
+                tiempo = tiempo_defecto
+
+            if linea[2].strip():
+                punto = int(linea[2])
+            else:
+                punto = punto_defecto
+    
+    return vida, tiempo, punto  # Devolver los valores de vida, tiempo y punto
+
+
+
 
 # Procesamiento
 vida, tiempo, punto = abrir_cfg("config.csv") # Leer los valores de vida, tiempo y punto
-print(f"Vida: {vida}, Tiempo: {tiempo}, Puntos: {punto}") # Mostrar los valores leídos
+print(f"Vida: {vida}, Tiempo(en seg): {tiempo}, Puntos: {punto}") # Mostrar los valores leídos
 
 # Configuración de la ventana
 CUADRO_ALTO = 40 # Alto de los cuadros de texto

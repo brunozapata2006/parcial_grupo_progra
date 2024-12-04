@@ -4,18 +4,16 @@ import random
 from pathlib import Path
 
 
-# Funcion para elegir el tema de las preguntas
 def elegir_tema(tema_final):
     '''
-    ¿Para qua sirve?
-    Esta funcion elige un tema de preguntas para cargar en el programa.
+    ¿Para qué sirve?
+    Esta función elige un tema de preguntas para cargar en el programa.
     
-    ¿Qua par
-    metro acepta?
+    ¿Qué parámetro acepta?
     - tema_final: (str) El tema elegido por el usuario. Es una cadena que especifica el tema deseado (por ejemplo, "Preguntas de Autos").
     
-    ¿Qua retorna?
-    - path_csv: (Path) La ruta al archivo CSV con las preguntas del tema elegido. Se devuelve la ruta donde estan almacenadas las preguntas del tema.
+    ¿Qué retorna?
+    - path_csv: (Path) La ruta al archivo CSV con las preguntas del tema elegido. Se devuelve la ruta donde están almacenadas las preguntas del tema.
     '''
     # Comprobamos el tema elegido y asignamos el archivo correspondiente
     if tema_final == "Preguntas de Autos":
@@ -23,10 +21,13 @@ def elegir_tema(tema_final):
     elif tema_final == "Preguntas de Juegos":
         path_csv = Path('preguntas_juegos.csv')  # Ruta al archivo CSV de preguntas de juegos
     elif tema_final == "Preguntas de Television":
-        path_csv = Path('preguntas_tv.csv')  # Ruta al archivo CSV de preguntas de television
+        path_csv = Path('preguntas_tv.csv')  # Ruta al archivo CSV de preguntas de televisión
     elif tema_final == "Preguntas Cargadas":
         path_csv = Path('preguntas_cargadas.csv')  # Ruta al archivo CSV de preguntas cargadas previamente
-        
+    else:
+        # Aquí puedes manejar el caso en que el tema no sea válido
+        raise ValueError(f"El tema '{tema_final}' no es válido. Por favor, elige un tema correcto.") 
+
     return path_csv  # Retorna la ruta al archivo correspondiente
 
 # Funcion para cargar las preguntas desde un archivo CSV

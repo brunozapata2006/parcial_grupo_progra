@@ -3,7 +3,7 @@ import sys
 
 import pygame
 
-from funciones import *
+from funciones_eventos import *
 from funciones_dibujar import *
 
 

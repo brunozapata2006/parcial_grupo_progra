@@ -2,7 +2,7 @@ import pygame
 
 from colores import *
 from configuraciones import *
-from funciones import *
+from funciones_eventos import *
 from funciones_dibujar import *
 
 
@@ -40,7 +40,7 @@ def dibujar_menu_botones(pantalla, pos_mouse):
     dibujar_texto_con_boton_transparente( # Llama a la funcion para dibujar un boton con texto
         pantalla, 
         "Salir", 
-        625, 550, 200, 50, 
+        300, 500, 200, 50, 
         CYAN2, RED1, 
         pos_mouse
     )
