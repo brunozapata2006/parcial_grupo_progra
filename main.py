@@ -17,6 +17,8 @@ from pantalla_top import *  # Importa la pantalla para mostrar el top mundial (a
 from ruleta import *  # Importa funciones para la ruleta (archivo externo).
 from pantalla_configuraciones import * # Importa la pantalla de configuraciones (archivo externo).
 from eventos import *
+from pantalla_configuraciones import pantalla_configuraciones
+from configuraciones  import *
 
 # Inicializar Pygame
 pygame.init()  # Inicializa todos los modulos necesarios para usar Pygame.
@@ -41,7 +43,7 @@ estado = "menu"  # Estado inicial del juego (en el menu principal).
 preguntas_guardadas = []  # Lista de preguntas guardadas
 path_csv_cargar = Path('preguntas_cargadas.csv')  # Archivo donde se guardan las preguntas
 cuadro_activo = 0  # indice del cuadro activo (inicia en 0)
-cuadros_texto_config = ["", ""]
+cuadros_texto_config = ["", "", ""]
 cuadros_texto_preg = ["", "", "", "", ""]  # Lista de cuadros de texto (pregunta y respuestas)
 
 path_csv_ranking = Path('ranking_top.csv')
@@ -70,6 +72,8 @@ guardado_preg = False
 guardado_config = False
 
 bandera_juego = False
+configuraciones = abrir_cfg("config.csv")
+
 
 # Bucle principal donde ocurre todo
 while jugar:
@@ -134,17 +138,17 @@ while jugar:
                 estado = "menu"
                 
         elif estado == "configuracion":
-            pantalla.blit(imagen_fondo_escalar, (0, 0))
-            boton_volver_menu_config, boton_guardar = dibujar_botones_configuraciones(pantalla, pos_mouse, cuadro_activo, cuadros_texto_config)
-            cuadro_activo, cuadros_texto_config = eventos_carg_vidas_tiempo(path_csv_cargar, evento, cuadro_activo, cuadros_texto_config)
-            if boton_volver_menu_config.collidepoint(pos):
+            nuevo_estado = pantalla_configuraciones(pantalla, pos_mouse, "config.csv")
+            if nuevo_estado == "menu":
                 estado = "menu"
+                
+             
             
         # Estando en el easter egg
         elif estado == "o.O":
             dibujar_boton_volver_gatitos = easter_egg(pantalla, pos_mouse)
-            if dibujar_boton_volver_gatitos.collidepoint(pos):
-                estado = "menu"  # Vuelve al menu principal.
+            if dibujar_boton_volver_config.collidepoint(pos):
+                estado = "menu"
         
     # Redibujar la pantalla segun el estado
     pantalla.fill(BLACK)  # Rellena la pantalla con el color BLACK.
@@ -211,9 +215,10 @@ while jugar:
     elif estado == "configuracion":
         pantalla.blit(imagen_fondo_escalar, (0, 0))
         boton_volver_menu_config, boton_guardar = dibujar_botones_configuraciones(pantalla, pos_mouse, cuadro_activo, cuadros_texto_config)
+        dibujar_boton_volver_config = dibujar_texto_con_boton_transparente(pantalla, "Volver al Menu", 620, 550, 200, 50, WHEAT1, RED1, pos_mouse)
         if guardado_config == False:
-            guardar_textos(cuadros_texto_config, path_csv_cargar)
-            guardado_config = True   
+            guardar_cfg(cuadros_texto_config[0], cuadros_texto_config[1], cuadros_texto_config[2], "config.csv")
+            guardado_config = True
 
     elif estado == "o.O":
         dibujar_boton_volver_gatitos = easter_egg(pantalla, pos_mouse)  # Dibuja la pantalla del easter egg.

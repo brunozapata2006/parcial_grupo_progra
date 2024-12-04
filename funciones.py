@@ -67,7 +67,7 @@ def eventos_carg_vidas_tiempo(csv, evento, cuadro_activo, cuadros_texto):
                 else:
                     try:
                         guardar_textos(cuadros_texto, path_csv)  # Guarda los textos en el archivo
-                        cuadros_texto = [""] * 2  # Reinicia los cuadros de texto
+                        cuadros_texto = [""] * 3  # Reinicia los cuadros de texto
                         cuadro_activo = 0  # Reinicia al primer cuadro
                     except Exception as e:
                         print(f"Error al guardar los textos: {e}")  # Manejo básico de errores
@@ -78,37 +78,3 @@ def eventos_carg_vidas_tiempo(csv, evento, cuadro_activo, cuadros_texto):
     return cuadro_activo, cuadros_texto
 
     
-# def gestionar_eventos_entrada(evento, cuadro_activo, cuadros_texto):
-#     ''' 
-#     ¿Para quo sirve?
-#     Esta funcion gestiona los eventos de teclado para escribir en los cuadros de texto o cambiar de cuadro.
-
-#     ¿Qua parametro acepta?
-#     - evento: (pygame.event.Event) El evento generado por las teclas del teclado (escribir por ejemplo)
-#     - cuadro_activo: (int) El indice del cuadro de texto actualmente activo (de 0 a 4, siendo 0 la pregunta)
-#     - cuadros_texto: (list) Lista de cadenas que representan el texto en cada cuadro.
-
-#     ¿Qua retorna?
-#     - cuadro_activo: (int) El indice actualizado del cuadro de texto activo.
-#     - cuadros_texto: (list) La lista actualizada con el texto introducido.
-#     '''
-#     path_csv = Path('preguntas_cargadas.csv')  # Ruta al archivo CSV donde se guardaran los textos
-    
-#     if evento.type == pygame.KEYDOWN:  # Si se presiona una tecla
-#         if cuadro_activo < 5:  # Si el cuadro activo esta dentro del rango valido
-#             if evento.key == pygame.K_BACKSPACE:  # Si se presiona la tecla BACKSPACE
-#                 cuadros_texto[cuadro_activo] = cuadros_texto[cuadro_activo][:-1]  # Elimina el ultimo caracter
-#             elif evento.key == pygame.K_RETURN:  # Si se presiona la tecla ENTER
-#                 if cuadro_activo < 4:  # Si no estamos en el ultimo cuadro
-#                     cuadro_activo += 1  # Cambia al siguiente cuadro de texto
-#                 else:  # Si es el ultimo cuadro, guarda y limpia
-#                     guardar_textos(cuadros_texto, path_csv)  # Guarda los textos en el CSV
-#                     cuadros_texto = ["", "", "", "", ""]  # Limpia los cuadros de texto
-#                     cuadro_activo = 0  # Reinicia el cuadro activo a 0
-#             else: 
-#                 if len(cuadros_texto[cuadro_activo]) < 50:  # Añadir un limite de caracteres por cuadro
-#                     cuadros_texto[cuadro_activo] += evento.unicode  # Añade el caracter al cuadro activo
-
-#     return cuadro_activo, cuadros_texto  # Devuelve el indice del cuadro activo y la lista de textos actualizada
-
-                    

@@ -1,26 +1,29 @@
 import pygame  # Importa la libreria Pygame para crear el juego.
 import csv
 
-ANCHO = 800
-ALTO = 600
-punto = 1
-vida = 3
-def abrir_cfg(csv):
-    with open(csv, mode='r', encoding='utf-8') as archivo:
-        lista = []
-        csv_linea =  archivo.readlines()
-        for linea in csv_linea:
-            print(linea)
-    #for i range linea:
-    #    vida =
-    #    tiempo =
-    #    puntos =
+ANCHO = 800 # Ancho de la ventana del juego.
+ALTO = 600 # Alto de la ventana del juego.
 
-abrir_cfg('config.csv')
-        
+def abrir_cfg(csv_path):
+    with open(csv_path, mode='r', encoding='utf-8') as archivo: # Modo lectura
+        lector = csv.reader(archivo) # Crear objeto lector
+        next(lector)  # Saltar la cabecera
+        for linea in lector:
+            vida = int(linea[0]) # Convertir a entero
+            tiempo = int(linea[1]) # Convertir a entero
+            punto = int(linea[2]) # Convertir a entero
+    return vida, tiempo, punto # Devolver los valores de vida, tiempo y punto
+
+# Procesamiento
+vida, tiempo, punto = abrir_cfg("config.csv") # Leer los valores de vida, tiempo y punto
+print(f"Vida: {vida}, Tiempo: {tiempo}, Puntos: {punto}") # Mostrar los valores leídos
+
+# Configuración de la ventana
+CUADRO_ALTO = 40 # Alto de los cuadros de texto
+CUADRO_ANCHO = 400 # Ancho de los cuadros de texto
 
 #hacer archivo config, y leerlo, luego hacer una pantalla para poder congiurar la vida tiempo etc, 
-CUADRO_ALTO = 40
+CUADRO_ALTO = 40 
 CUADRO_ANCHO = 400  
 
 # Cargar imagenes
@@ -39,5 +42,3 @@ Titulo_escalado = pygame.transform.scale(Titulo, (200, 80))  # Redimensiona la i
 corazon_lleno_escalado = pygame.transform.scale(corazon_lleno, (20, 20))  # Redimensiona la imagen del corazon.
 
 
-    
-    

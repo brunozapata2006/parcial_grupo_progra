@@ -115,7 +115,7 @@ def mostrar_texto(superficie, texto, x=None, y=None, color=BLACK, color_fondo=WH
             superficie.blit(texto_renderizado, ((800 - texto_renderizado.get_width()) // 2, (600 - texto_renderizado.get_height()) // 2))
 
             # Actualizar pantalla
-            pygame.display.flip()
+            #pygame.display.flip()
 
             # Salir del bucle después de la duración especificada
             if tiempo_actual - inicio >= duracion * 1000:
