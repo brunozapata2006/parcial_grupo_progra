@@ -28,14 +28,11 @@ pygame.font.init()  # Inicializa el sistema de fuentes para poder renderizar tex
 
 # Cargar sonido de fondo
 sonido = pygame.mixer.Sound('assets/musicaa.mp3')  # Carga el archivo de musica.
-sonido.set_volume(0.1)  # Establece el volumen a 0.1.
-# sonido.play()  # Reproduce la musica en bucle.
-
+sonido.set_volume(0)  # Establece el volumen a 0.1.
+sonido.play()  # Reproduce la musica en bucle.
 
 sonido_resta = pygame.mixer.Sound('assets/resta.mp3')  # Carga el archivo de musica.
 sonido_resta.set_volume(0.1)  # Establece el volumen a 0.1.
-
-
 
 # Crear la ventana del juego
 pantalla = pygame.display.set_mode((800, 600), pygame.RESIZABLE)  # Configura la pantalla con tamaño 800x600 (redimensionable).
@@ -200,6 +197,7 @@ while jugar:
                         puntos += punto  # Suma un punto si la respuesta es correcta.
                     else:
                         vidas -= 1 # Resta una vida si la respuesta es incorrecta.
+                        sonido_resta.play(loops=1,maxtime=3000)
                         
                     pregunta_actual_index += 1  # Avanza al siguiente indice de la pregunta.
                     tiempo_restante = tiempo
@@ -208,9 +206,6 @@ while jugar:
             if vidas == 0 or pregunta_actual_index >= len(preguntas):  # Si las vidas llegan a 0, vuelve al menu o Si ya no hay preguntas, vuelve al menu.
                 estado = "menu" 
                 
-                
-        
-        
     elif estado == "Ver top mundiales":
         pygame.display.set_caption("Vamos a ver los tops!") # Establece el titulo de la ventana.
         pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo.
