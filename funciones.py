@@ -3,7 +3,7 @@ import pygame  # Librería principal para crear juegos en 2D
 import csv  # Para trabajar con archivos CSV
 from colores import *  # Colores definidos en otro archivo
 from configuraciones import *  # Configuraciones del juego
-from funciones_guardar import *
+from funciones_guardar import * # Funciones para guardar datos en archivos CSV
 
 # Función para manejar los eventos de teclado en los cuadros de texto
 def eventos_carg_preguntas(csv, evento, cuadro_activo, cuadros_texto):
@@ -59,10 +59,10 @@ def eventos_carg_vidas_tiempo(csv, evento, cuadro_activo, cuadros_texto):
     
     if evento.type == pygame.KEYDOWN:  # Si se presiona una tecla
         if cuadro_activo < 2:  # Solo se permite escribir en los cuadros 0 y 1
-            if evento.key == pygame.K_BACKSPACE:
+            if evento.key == pygame.K_BACKSPACE: # Si se presiona la tecla BACKSPACE
                 cuadros_texto[cuadro_activo] = cuadros_texto[cuadro_activo][:-1]  # Elimina el último carácter
-            elif evento.key == pygame.K_RETURN:
-                if cuadro_activo < 1:
+            elif evento.key == pygame.K_RETURN: # Si se presiona la tecla ENTER
+                if cuadro_activo < 1: # Si no estamos en el último cuadro
                     cuadro_activo += 1  # Cambia al siguiente cuadro
                 else:
                     try:

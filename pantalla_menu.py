@@ -28,7 +28,7 @@ def dibujar_menu_botones(pantalla, pos_mouse):
     )
 
     # Dibujar el boton "Ver top mundiales"
-    dibujar_texto_con_boton_transparente(
+    dibujar_texto_con_boton_transparente( # Llama a la funcion para dibujar un boton con texto
         pantalla, 
         "Ver top mundiales", 
         300, 200, 200, 50, 
@@ -37,7 +37,7 @@ def dibujar_menu_botones(pantalla, pos_mouse):
     )
 
     # Dibujar el boton "Salir"
-    dibujar_texto_con_boton_transparente(
+    dibujar_texto_con_boton_transparente( # Llama a la funcion para dibujar un boton con texto
         pantalla, 
         "Salir", 
         625, 550, 200, 50, 
@@ -46,7 +46,7 @@ def dibujar_menu_botones(pantalla, pos_mouse):
     )
 
     # Dibujar el boton "Cargar preguntas"
-    dibujar_texto_con_boton_transparente(
+    dibujar_texto_con_boton_transparente( # Llama a la funcion para dibujar un boton con texto
         pantalla, 
         "Cargar preguntas", 
         300, 300, 200, 50, 
@@ -54,7 +54,7 @@ def dibujar_menu_botones(pantalla, pos_mouse):
         pos_mouse
     )
     
-    dibujar_texto_con_boton_transparente(
+    dibujar_texto_con_boton_transparente( # Llama a la funcion para dibujar un boton con texto
         pantalla, 
         "configuracion", 
         300, 400, 200, 50, 

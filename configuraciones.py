@@ -5,6 +5,17 @@ ANCHO = 800 # Ancho de la ventana del juego.
 ALTO = 600 # Alto de la ventana del juego.
 
 def abrir_cfg(csv_path):
+    '''
+    ¿Para qué sirve?
+    Abre un archivo CSV y lee los valores de vida, tiempo y punto.
+    
+    ¿Qué parámetros acepta?
+    - csv_path: (str) La ruta del archivo CSV que se abrirá.
+    
+    ¿Qué retorna?
+    - (int, int, int): Devuelve una tupla con los valores de vida, tiempo y punto leídos del archivo CSV
+    
+    '''
     with open(csv_path, mode='r', encoding='utf-8') as archivo: # Modo lectura
         lector = csv.reader(archivo) # Crear objeto lector
         next(lector)  # Saltar la cabecera

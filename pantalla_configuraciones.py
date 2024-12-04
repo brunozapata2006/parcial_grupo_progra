@@ -42,12 +42,41 @@ def dibujar_botones_configuraciones(pantalla, pos_mouse, cuadro_activo, cuadros_
 
 
 def guardar_cfg(vida, tiempo, punto, csv_path):
+    '''
+    Plantilla Documentacion
+    ¿Para qua sirve?
+    Guarda los valores de vida, tiempo y punto en un archivo CSV.
+    
+    ¿Qua parametros acepta?
+    - vida: (str) La cantidad de vidas que se guardarán en el archivo.
+    - tiempo: (str) El tiempo que se guardará en el archivo.
+    - punto: (str) La cantidad de puntos que se guardarán en el archivo.
+    - csv_path: (str) La ruta del archivo CSV donde se guardarán los valores.
+    
+    ¿Qua retorna?
+    No retorna ningun valor, pero guarda los valores en el archivo CSV especificado.
+    '''
     with open(csv_path, mode='w', newline='', encoding='utf-8') as archivo: # Modo escritura
         escritor = csv.writer(archivo) # Crear objeto escritor
         escritor.writerow(["vida", "tiempo", "punto"]) # Escribir la cabecera
         escritor.writerow([vida, tiempo, punto]) # Escribir los valores de vida, tiempo y punto
 
 def eventos_configuracion(evento, cuadro_activo, cuadros_texto):
+    '''
+    Plantilla Documentacion
+    ¿Para qué sirve?
+    Gestiona los eventos de teclado para escribir en los cuadros de texto o cambiar de cuadro. Dependiendo del archivo CSV proporcionado, 
+    los datos introducidos pueden ser preguntas y respuestas o nombre y puntuación.
+    
+    ¿Qué parámetros acepta?
+    - evento: (pygame.event.Event) El evento generado por la acción de la tecla (por ejemplo, pulsar una tecla para escribir).
+    - cuadro_activo: (int) El índice del cuadro de texto actualmente activo, de 0 a 3 (solo hay 4 cuadros de texto: vidas, tiempo y puntos).
+    - cuadros_texto: (list) Lista de cadenas de texto que representan el contenido en cada cuadro de texto.
+    
+    ¿Qué retorna?
+    - (int, list): Devuelve una tupla con el índice del cuadro activo actualizado y la lista de textos actualizada.
+    
+    '''
     if evento.type == pygame.KEYDOWN: # Si se presiona una tecla
         if cuadro_activo < 3: # Solo se permite escribir en los cuadros 0, 1 y 2
             if evento.key == pygame.K_BACKSPACE: # Si se presiona la tecla BACKSPACE
@@ -59,6 +88,20 @@ def eventos_configuracion(evento, cuadro_activo, cuadros_texto):
     return cuadro_activo, cuadros_texto
 
 def pantalla_configuraciones(pantalla, pos_mouse, csv_path):
+    '''
+    Plantilla Documentacion
+    ¿Para qué sirve?
+    Esta función maneja la pantalla de configuraciones del juego, permitiendo al usuario modificar la cantidad de vidas, tiempo y puntos.
+    
+    ¿Qué parámetros acepta?
+    - pantalla: (Surface) La superficie de la ventana de Pygame donde se dibujarán los elementos.
+    - pos_mouse: (tuple) Las coordenadas (x, y) actuales del ratón.
+    - csv_path: (str) La ruta del archivo CSV donde se guardarán los valores de vida, tiempo y punto.
+    
+    ¿Qué retorna?
+    - str: Retorna "menu" si el usuario decide volver al menú principal.
+    
+    '''
     cuadros_texto = ["", "", ""] # Inicializar los cuadros de texto
     cuadro_activo = 0 # Inicializar el cuadro activo
     while True:

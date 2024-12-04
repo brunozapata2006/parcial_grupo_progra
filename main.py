@@ -87,11 +87,11 @@ while jugar:
             pos = evento.pos  # Obtiene la posicion del clic del mouse.
             bandera_click = True  # Marca que se hizo un clic.
         if evento.type == timer_event:
-            segundos_actuales += 1
-        if segundos_actuales == 60:
-                segundos_actuales = 0
-                minutos_actuales += 1
-                tiempo_en_formato = f"{str(minutos_actuales).zfill(2)}:{str(segundos_actuales).zfill(2)}"
+            segundos_actuales += 1 # Suma un segundo
+        if segundos_actuales == 60: # Si pasan 60 segundos
+                segundos_actuales = 0 # Reinicia los segundos
+                minutos_actuales += 1 # Suma un minuto
+                tiempo_en_formato = f"{str(minutos_actuales).zfill(2)}:{str(segundos_actuales).zfill(2)}" # Formato MM:SS
         # Estando en el menu
         if estado == "menu":
             # Detectar clics en los botones del menu
@@ -133,42 +133,42 @@ while jugar:
         elif estado == "agregar preguntas":
             pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo.
             dibujar_boton_volver_preguntas = dibujar_botones_agregar_pregunta(pantalla, pos_mouse, cuadro_activo, cuadros_texto_preg)  # Dibuja los botones para agregar preguntas.
-            cuadro_activo, cuadros_texto_preg = eventos_carg_preguntas(path_csv_cargar, evento, cuadro_activo, cuadros_texto_preg)
+            cuadro_activo, cuadros_texto_preg = eventos_carg_preguntas(path_csv_cargar, evento, cuadro_activo, cuadros_texto_preg) # Maneja los eventos de los cuadros de texto.
             if dibujar_boton_volver_preguntas.collidepoint(pos):
-                estado = "menu"
+                estado = "menu" # Vuelve al menu principal.
                 
         elif estado == "configuracion":
-            nuevo_estado = pantalla_configuraciones(pantalla, pos_mouse, "config.csv")
-            if nuevo_estado == "menu":
-                estado = "menu"
+            nuevo_estado = pantalla_configuraciones(pantalla, pos_mouse, "config.csv") # Muestra la pantalla de configuraciones.
+            if nuevo_estado == "menu": # Si se hace clic en "Volver al Menu".
+                estado = "menu" # Vuelve al menu principal.
                 
              
             
         # Estando en el easter egg
         elif estado == "o.O":
-            dibujar_boton_volver_gatitos = easter_egg(pantalla, pos_mouse)
-            if dibujar_boton_volver_config.collidepoint(pos):
+            dibujar_boton_volver_gatitos = easter_egg(pantalla, pos_mouse) # Dibuja la pantalla del easter egg.
+            if dibujar_boton_volver_config.collidepoint(pos): # Si se hace clic en "Volver al Menu".
                 estado = "menu"
         
     # Redibujar la pantalla segun el estado
     pantalla.fill(BLACK)  # Rellena la pantalla con el color BLACK.
 
     if estado == "menu":
-        pygame.display.set_caption("Menu preguntados!")
+        pygame.display.set_caption("Menu preguntados!") # Establece el titulo de la ventana.
         pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo del menu.
         botones_menu = dibujar_menu_botones(pantalla, pos_mouse)  # Dibuja los botones del menu.
         pantalla.blit(Titulo_escalado, (300, 20))  # Dibuja el titulo escalado en la pantalla.
         tema_elegido = ''  # Reinicia el tema.
         vidas = 3  # Reinicia las vidas.
         if bandera_juego == True:
-            pantalla.blit(imagen_fondo_escalar, (0, 0))
-            nombre = ingreso_nombre(pantalla, pos_mouse)
-            guardar_nombre_csv(nombre, puntos, path_csv_ranking)
-            puntos = 0
-            bandera_juego = False
+            pantalla.blit(imagen_fondo_escalar, (0, 0)) # Dibuja el fondo en el juego.
+            nombre = ingreso_nombre(pantalla, pos_mouse) # Pide el nombre del jugador.
+            guardar_nombre_csv(nombre, puntos, path_csv_ranking) # Guarda el nombre y los puntos en el ranking.
+            puntos = 0 # Reinicia los puntos.
+            bandera_juego = False # Reinicia la bandera del juego.
 
     elif estado == "juego":
-        pygame.display.set_caption("Vamos a jugar")
+        pygame.display.set_caption("Vamos a jugar") # Establece el titulo de la ventana.
         pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo en el juego.
         if tema_elegido != '':  # Si ya se eligio un tema.
             bandera_juego = True
@@ -176,10 +176,10 @@ while jugar:
 
             for i, boton in enumerate(botones):
                 if boton.collidepoint(pos) and bandera_click:  # Si se hace clic en una respuesta.
-                    pregunta = preguntas[pregunta_actual_index]
+                    pregunta = preguntas[pregunta_actual_index] # Obtiene la pregunta actual.
                     respuestas = pregunta[1:]  # Las respuestas estan en los indices 1 y siguientes.
                     
-                    respueta_elegida = respuestas[i]
+                    respueta_elegida = respuestas[i] # La respuesta elegida es la que corresponde al indice del boton.
                     respuesta_correcta = pregunta[-1]  # La ultima respuesta es la correcta.
                     
                     if respueta_elegida == respuesta_correcta:
@@ -187,11 +187,11 @@ while jugar:
                     else:
                         vidas -= 1  # Resta una vida si la respuesta es incorrecta.
                         if vidas == 2:
-                            mostrar_texto(pantalla, "Tienes 2 vidas",400, 300, permitir_segundos=True, duracion=1)          
+                            mostrar_texto(pantalla, "Tienes 2 vidas",400, 300, permitir_segundos=True, duracion=1)   # Muestra un mensaje si quedan 2 vidas.        
                         if vidas == 1:
-                            mostrar_texto(pantalla, "Tienes 1 vida",400, 300, permitir_segundos=True, duracion=1)
+                            mostrar_texto(pantalla, "Tienes 1 vida",400, 300, permitir_segundos=True, duracion=1)  # Muestra un mensaje si queda 1 vida.
 
-                    dibujar_texto_con_boton_transparente(pantalla,segundos_actuales, 300,300, 100,100, RED1, RED1,pos_mouse)
+                    dibujar_texto_con_boton_transparente(pantalla,segundos_actuales, 300,300, 100,100, RED1, RED1,pos_mouse) # Muestra el tiempo en pantalla
                     pregunta_actual_index += 1  # Avanza al siguiente indice de la pregunta.
             mostrar_texto(pantalla, f"Puntos: {puntos}",(600), (10))  # Muestra los puntos en la pantalla.
 
@@ -199,26 +199,26 @@ while jugar:
                 estado = "menu" 
         
     elif estado == "Ver top mundiales":
-        pygame.display.set_caption("Vamos a ver los tops!")
+        pygame.display.set_caption("Vamos a ver los tops!") # Establece el titulo de la ventana.
         pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo.
         botones_tops_mundiales = dibujar_botones_top_mundial(pantalla, pos_mouse)  # Dibuja los botones para el top mundial.
-        mostrar_top(pantalla, path_csv_ranking)
+        mostrar_top(pantalla, path_csv_ranking) # Muestra el top mundial.
         
     elif estado == "agregar preguntas":
-        pygame.display.set_caption("Agregar preguntas!")
+        pygame.display.set_caption("Agregar preguntas!") # Establece el titulo de la ventana.
         pantalla.blit(imagen_fondo_escalar, (0, 0))  # Dibuja el fondo.
         dibujar_boton_volver_preguntas = dibujar_botones_agregar_pregunta(pantalla, pos_mouse, cuadro_activo, cuadros_texto_preg)  # Dibuja los botones para agregar preguntas.
-        if guardado_preg == False:
-            guardar_textos(cuadros_texto_preg, path_csv_cargar)
-            guardado_preg = True
-    
-    elif estado == "configuracion":
-        pantalla.blit(imagen_fondo_escalar, (0, 0))
-        boton_volver_menu_config, boton_guardar = dibujar_botones_configuraciones(pantalla, pos_mouse, cuadro_activo, cuadros_texto_config)
-        dibujar_boton_volver_config = dibujar_texto_con_boton_transparente(pantalla, "Volver al Menu", 620, 550, 200, 50, WHEAT1, RED1, pos_mouse)
-        if guardado_config == False:
-            guardar_cfg(cuadros_texto_config[0], cuadros_texto_config[1], cuadros_texto_config[2], "config.csv")
-            guardado_config = True
+        if guardado_preg == False: # Si no se han guardado las preguntas.
+            guardar_textos(cuadros_texto_preg, path_csv_cargar) # Guarda las preguntas en el archivo.
+            guardado_preg = True # Marca que ya se guardaron las preguntas.
+     
+    elif estado == "configuracion": # Si se esta en la pantalla de configuraciones
+        pantalla.blit(imagen_fondo_escalar, (0, 0)) # Dibuja el fondo.
+        boton_volver_menu_config, boton_guardar = dibujar_botones_configuraciones(pantalla, pos_mouse, cuadro_activo, cuadros_texto_config) # Dibuja los botones y cuadros de texto.
+        dibujar_boton_volver_config = dibujar_texto_con_boton_transparente(pantalla, "Volver al Menu", 620, 550, 200, 50, WHEAT1, RED1, pos_mouse) # Dibuja el boton "Volver al Menu".
+        if guardado_config == False: # Si no se ha guardado la configuracion.
+            guardar_cfg(cuadros_texto_config[0], cuadros_texto_config[1], cuadros_texto_config[2], "config.csv") # Guarda la configuracion en el archivo.
+            guardado_config = True # Marca que ya se guardo la configuracion.
 
     elif estado == "o.O":
         dibujar_boton_volver_gatitos = easter_egg(pantalla, pos_mouse)  # Dibuja la pantalla del easter egg.

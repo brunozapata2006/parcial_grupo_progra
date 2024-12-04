@@ -76,7 +76,7 @@ def dibujar_vidas(pantalla, vidas):
 
 
 # Funcion para mostrar texto en la pantalla
-def mostrar_texto(superficie, texto, x=None, y=None, color=BLACK, color_fondo=WHEAT1, font_size=30, permitir_segundos = False, duracion = None):
+def mostrar_texto(superficie, texto, x=None, y=None, color=BLACK, color_fondo=WHEAT1, font_size=30, permitir_segundos = False, duracion = None): # Por defecto, el texto se muestra en el centro de la pantalla
     ''' 
     ¿Para qué sirve?
     Esta función permite mostrar un texto en una superficie de Pygame en una posición específica. 
@@ -107,12 +107,12 @@ def mostrar_texto(superficie, texto, x=None, y=None, color=BLACK, color_fondo=WH
     if permitir_segundos == True:
         inicio = pygame.time.get_ticks()  # Tiempo actual en milisegundos
         while True:
-            tiempo_actual = pygame.time.get_ticks()
+            tiempo_actual = pygame.time.get_ticks() # Tiempo actual en milisegundos
 
             # Dibujar el fondo y el texto
-            superficie.fill(color_fondo)
-            texto_renderizado = fuente.render(texto, True, color)
-            superficie.blit(texto_renderizado, ((800 - texto_renderizado.get_width()) // 2, (600 - texto_renderizado.get_height()) // 2))
+            superficie.fill(color_fondo) # Rellena la superficie con un color de fondo
+            texto_renderizado = fuente.render(texto, True, color) # Renderiza el texto con la fuente y el color
+            superficie.blit(texto_renderizado, ((800 - texto_renderizado.get_width()) // 2, (600 - texto_renderizado.get_height()) // 2)) # Dibuja el texto en el centro de la pantalla
 
             # Actualizar pantalla
             #pygame.display.flip()
@@ -121,40 +121,3 @@ def mostrar_texto(superficie, texto, x=None, y=None, color=BLACK, color_fondo=WH
             if tiempo_actual - inicio >= duracion * 1000:
                 break
 
-# # Funcion para dibujar los puntos del jugador en la pantalla
-# def dibujar_puntos(pantalla, puntos):
-#     '''
-#     ¿Para qua sirve?
-#     Esta funcion dibuja el puntaje del jugador en la pantalla.
-
-#     ¿Qua parametro acepta?
-#     - pantalla: (pygame.Surface) La superficie donde se dibuja el puntaje.
-#     - puntos: (int) La cantidad de puntos que tiene el jugador.
-
-#     ¿Qua retorna?
-#     - None. La funcion solo dibuja los puntos en la pantalla.
-#     '''
-#     fuente = pygame.font.Font(None, 36)  # Crea una fuente con un tamaño de 36
-#     texto = fuente.render(f"Puntos: {puntos}", True, (BLACK))  # Renderiza el texto con los puntos
-#     pantalla.blit(texto, (600, 10))  # Dibuja el texto en la pantalla
-
-
-# # Función para mostrar un cartel
-# def mostrar_cartel(screen, texto, duracion, color_fondo, color_texto):
-
-#     inicio = pygame.time.get_ticks()  # Tiempo actual en milisegundos
-#     fuente = pygame.font.Font(None, 36)
-#     while True:
-#         tiempo_actual = pygame.time.get_ticks()
-
-#         # Dibujar el fondo y el texto
-#         screen.fill(color_fondo)
-#         texto_renderizado = fuente.render(texto, True, color_texto)
-#         screen.blit(texto_renderizado, ((800 - texto_renderizado.get_width()) // 2, (600 - texto_renderizado.get_height()) // 2))
-
-#         # Actualizar pantalla
-#         pygame.display.flip()
-
-#         # Salir del bucle después de la duración especificada
-#         if tiempo_actual - inicio >= duracion * 1000:
-#             break
